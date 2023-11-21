@@ -7,15 +7,20 @@ import java.util.Optional;
 
 @Service
 public class CategoryService {
-    List<String> categories = List.of("Shop", "Restaurant", "Playground");
 
-    List<String> getAllCategories() {
-        return categories;
+    CategoryRepository repository;
+
+    public CategoryService(CategoryRepository repository) {
+        this.repository = repository;
     }
 
-    Optional<String> getOneCategory(int id) {
-        if (id < 0 || id >= categories.size())
-            return Optional.empty();
-        return Optional.of(categories.get(id));
+    List<CategoryNameSymbol> getAllCategories() {
+        return repository.findAll().stream()
+                .map(CategoryNameSymbol::new)
+                .toList();
+    }
+
+    Optional<Category> getOneCategory(int id) {
+        return repository.findById(id);
     }
 }
