@@ -1,5 +1,8 @@
-package com.example.springboot;
+package com.example.springboot.service;
 
+import com.example.springboot.dto.CategoryNameSymbol;
+import com.example.springboot.entity.Category;
+import com.example.springboot.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +17,13 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    List<CategoryNameSymbol> getAllCategories() {
+    public List<CategoryNameSymbol> getAllCategories() {
         return repository.findAll().stream()
                 .map(CategoryNameSymbol::new)
                 .toList();
     }
 
-    Optional<Category> getOneCategory(int id) {
+    public Optional<Category> getOneCategory(int id) {
         return repository.findById(id);
     }
 }

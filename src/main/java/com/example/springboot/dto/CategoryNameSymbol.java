@@ -1,4 +1,6 @@
-package com.example.springboot;
+package com.example.springboot.dto;
+
+import com.example.springboot.entity.Category;
 
 public record CategoryNameSymbol(String name, String symbol) {
 
