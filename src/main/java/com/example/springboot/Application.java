@@ -1,9 +1,10 @@
-package com.example.springboot.application;
+package com.example.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication // Innehåller @Configuration, @EnableAutoConfiguration, @ComponentScan
+// Innehåller @Configuration, @EnableAutoConfiguration, @ComponentScan
+@SpringBootApplication
 public class Application {
 
 	public static void main(String[] args) {
