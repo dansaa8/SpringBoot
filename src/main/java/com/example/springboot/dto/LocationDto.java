@@ -10,13 +10,12 @@ import java.time.Instant;
 
 public record LocationDto(
         Integer id,
-        @NotNull @Size(max = 255)
-        String name,
+        @NotNull @Size(max = 255) String name,
         String status,
         @Size(max = 255) String description,
         Instant createdAt,
         Instant lastModified,
-        Category fkCategory) implements Serializable {
+        CategoryDto fkCategory) implements Serializable {
 
         public LocationDto(Location location) {
                 this(   location.getId(),
@@ -25,6 +24,6 @@ public record LocationDto(
                         location.getDescription(),
                         location.getCreatedAt(),
                         location.getLastModified(),
-                        location.getFkCategory());
+                        new CategoryDto(location.getFkCategory()));
         }
 }

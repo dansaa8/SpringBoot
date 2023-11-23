@@ -35,7 +35,7 @@ public class Location {
     private Instant lastModified;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_category")
+    @JoinColumn(name = "fk_category") // Owner side of the relation
     private Category fkCategory;
 
     public Integer getId() {

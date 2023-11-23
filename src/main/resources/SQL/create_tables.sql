@@ -1,3 +1,4 @@
+DROP DATABASE if exists geo_POI;
 CREATE DATABASE geo_POI;
 USE geo_POI;
 

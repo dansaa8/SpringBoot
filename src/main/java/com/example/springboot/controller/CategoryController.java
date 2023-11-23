@@ -1,6 +1,6 @@
 package com.example.springboot.controller;
 
-import com.example.springboot.dto.CategoryNameSymbol;
+import com.example.springboot.dto.CategoryDto;
 import com.example.springboot.service.CategoryService;
 import com.example.springboot.entity.Category;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryNameSymbol> getAll() {
+    public List<CategoryDto> getAll() {
         return service.getAllCategories();
     }
 

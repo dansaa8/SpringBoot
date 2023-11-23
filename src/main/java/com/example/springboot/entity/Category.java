@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Category {
 
@@ -25,6 +28,9 @@ public class Category {
     @Size(max = 255)
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "fkCategory") // refererar till fältnamnet i Location entiteten; inte kolumnnamn i DB
+    private List<Location> locations = new ArrayList<>();
 
     public Integer getId() {
         return id;
