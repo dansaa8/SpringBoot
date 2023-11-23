@@ -41,4 +41,4 @@ VALUES (
            'Secret grocery store',
            '1977-06-17',
            '1999-12-24',
-           1);
+           2);

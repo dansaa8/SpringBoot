@@ -1,6 +1,5 @@
 package com.example.springboot.dto;
 
-import com.example.springboot.entity.Category;
 import com.example.springboot.entity.Location;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,7 +14,7 @@ public record LocationDto(
         @Size(max = 255) String description,
         Instant createdAt,
         Instant lastModified,
-        CategoryDto fkCategory) implements Serializable {
+        CategoryDto category) implements Serializable {
 
         public LocationDto(Location location) {
                 this(   location.getId(),

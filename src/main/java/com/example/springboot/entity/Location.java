@@ -34,8 +34,12 @@ public class Location {
     @Column(name = "last_modified")
     private Instant lastModified;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_category") // Owner side of the relation
+    // Default lazy. Ej säkert att vi kommer hämta ut Category. Väntar med att hämta fk. Blir dålig prestanda.
+    // Måste säga till Location att vi ska hämta Category direkt.
+    // primitiva som motsv. en col hämtas direkt. Men referenser till andra tabeller, entitet från annan tabell
+    // väntar spring boot med att hämta.
     private Category fkCategory;
 
     public Integer getId() {
