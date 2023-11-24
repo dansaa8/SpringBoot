@@ -18,7 +18,7 @@ public class LocationService {
     }
 
     public List<LocationDto> getAllLocations() {
-        return repository.findAll().stream()
+        return repository.findByStatus("public").stream()
                 .map(LocationDto::new)
                 .toList();
     }
