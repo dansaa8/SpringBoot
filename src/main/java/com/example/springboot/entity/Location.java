@@ -1,6 +1,5 @@
 package com.example.springboot.entity;
 
-import com.example.springboot.entity.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -40,7 +39,7 @@ public class Location {
     // Måste säga till Location att vi ska hämta Category direkt.
     // primitiva som motsv. en col hämtas direkt. Men referenser till andra tabeller, entitet från annan tabell
     // väntar spring boot med att hämta.
-    private Category fkCategory;
+    private Category category;
 
     public Integer getId() {
         return id;
@@ -90,12 +89,12 @@ public class Location {
         this.lastModified = lastModified;
     }
 
-    public Category getFkCategory() {
-        return fkCategory;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setFkCategory(Category fkCategory) {
-        this.fkCategory = fkCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 /*

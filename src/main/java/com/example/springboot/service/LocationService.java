@@ -18,7 +18,15 @@ public class LocationService {
     }
 
     public List<LocationDto> getAllLocations() {
-        return repository.findByStatus("public").stream()
+        return repository.findByStatus("public")
+                .stream()
+                .map(LocationDto::new)
+                .toList();
+    }
+
+    public List<LocationDto> getAllPublicLocationsByCategory(String categoryName) {
+        return repository.findByStatusAndCategoryName("public", categoryName)
+                .stream()
                 .map(LocationDto::new)
                 .toList();
     }

@@ -1,5 +1,6 @@
 package com.example.springboot.repository;
 
+import com.example.springboot.entity.Category;
 import com.example.springboot.entity.Location;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
@@ -12,4 +13,5 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends ListCrudRepository<Location, Integer> {
     List<Location> findByStatus(String status);
+    List<Location> findByStatusAndCategoryName(String status, String categoryName);
 }

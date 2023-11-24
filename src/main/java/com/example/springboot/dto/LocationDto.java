@@ -23,6 +23,6 @@ public record LocationDto(
                         location.getDescription(),
                         location.getCreatedAt(),
                         location.getLastModified(),
-                        new CategoryDto(location.getFkCategory()));
+                        new CategoryDto(location.getCategory()));
         }
 }

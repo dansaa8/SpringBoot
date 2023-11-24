@@ -29,7 +29,7 @@ public class Category {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "fkCategory") // refererar till fältnamnet i Location entiteten; inte kolumnnamn i DB
+    @OneToMany(mappedBy = "category") // refererar till fältnamnet i Location entiteten; inte kolumnnamn i DB
     private List<Location> locations = new ArrayList<>();
 
     public Integer getId() {
