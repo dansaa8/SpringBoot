@@ -12,12 +12,10 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "id", nullable = false)
     private Integer id; // Kan skicka in null med objektversion = skapa ny rad o autogenerera ID
 
     @Size(max = 255)
-    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 

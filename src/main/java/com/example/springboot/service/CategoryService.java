@@ -3,6 +3,7 @@ package com.example.springboot.service;
 import com.example.springboot.dto.CategoryDto;
 import com.example.springboot.entity.Category;
 import com.example.springboot.repository.CategoryRepository;
+import com.example.springboot.requestbody.CategoryRequestBody;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,5 +26,15 @@ public class CategoryService {
 
     public Optional<Category> getOneCategory(int id) {
         return repository.findById(id);
+    }
+
+    public void addCategory(CategoryRequestBody category) {
+        //Skapa entitetsobjekt
+        Category categoryEntity = new Category();
+        categoryEntity.setName(category.name());
+        categoryEntity.setDescription(category.description());
+        categoryEntity.setSymbol(category.symbol());
+
+        repository.save(categoryEntity);
     }
 }

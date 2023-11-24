@@ -1,13 +1,11 @@
 package com.example.springboot.controller;
 
 import com.example.springboot.dto.CategoryDto;
+import com.example.springboot.requestbody.CategoryRequestBody;
 import com.example.springboot.service.CategoryService;
 import com.example.springboot.entity.Category;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,4 +31,12 @@ public class CategoryController {
             return ResponseEntity.ok().body(category.get());
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping
+    //Parametern vi lägger till kommer från requesten default json i SpringController
+    public void addOne(@RequestBody CategoryRequestBody category) {
+        System.out.println(category);
+        service.addCategory(category);
+    }
+
 }
