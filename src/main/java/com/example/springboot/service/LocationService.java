@@ -1,9 +1,9 @@
 package com.example.springboot.service;
 
-import com.example.springboot.dto.LocationDto;
 import com.example.springboot.entity.Location;
 import com.example.springboot.repository.LocationRepository;
 import org.springframework.stereotype.Service;
+import com.example.springboot.dto.LocationDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +18,14 @@ public class LocationService {
     }
 
     public List<LocationDto> getAllLocations() {
-        return repository.findByStatus("public")
+        return repository.findByIsPrivateFalse()
                 .stream()
                 .map(LocationDto::new)
                 .toList();
     }
 
     public List<LocationDto> getAllPublicLocationsByCategory(String categoryName) {
-        return repository.findByStatusAndCategoryName("public", categoryName)
+        return repository.findByIsPrivateFalseAndCategoryName(categoryName)
                 .stream()
                 .map(LocationDto::new)
                 .toList();

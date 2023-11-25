@@ -19,9 +19,13 @@ public class Location {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Column(name = "status")
-    private String status;
+    @Size(max = 255)
+    @Column(name = "user_id")
+    private String userId;
+
+    @NotNull
+    @Column(name = "is_private", nullable = false)
+    private Boolean isPrivate = false;
 
     @Size(max = 255)
     @Column(name = "description")
@@ -32,13 +36,8 @@ public class Location {
 
     @Column(name = "last_modified")
     private Instant lastModified;
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "fk_category") // Owner side of the relation
-    // Default lazy. Ej säkert att vi kommer hämta ut Category. Väntar med att hämta fk. Blir dålig prestanda.
-    // Måste säga till Location att vi ska hämta Category direkt.
-    // primitiva som motsv. en col hämtas direkt. Men referenser till andra tabeller, entitet från annan tabell
-    // väntar spring boot med att hämta.
+    @JoinColumn(name = "fk_category")
     private Category category;
 
     public Integer getId() {
@@ -57,12 +56,20 @@ public class Location {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Boolean getIsPrivate() {
+        return isPrivate;
+    }
+
+    public void setIsPrivate(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
     public String getDescription() {
