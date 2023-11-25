@@ -1,9 +1,14 @@
 package com.example.springboot.entity;
 
+import com.example.springboot.Point2DSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Point;
 
+import java.awt.*;
 import java.time.Instant;
 
 @Entity
@@ -13,6 +18,9 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    private Point<G2D> coordinate;
+
 
     @Size(max = 255)
     @NotNull
@@ -54,6 +62,14 @@ public class Location {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Point<G2D> getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Point<G2D> coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getUserId() {
