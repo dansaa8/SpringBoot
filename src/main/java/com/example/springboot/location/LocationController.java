@@ -1,5 +1,6 @@
 package com.example.springboot.location;
 
+import com.example.springboot.location.requestbodies.LocationRequestBody;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,13 @@ public class LocationController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addOne(@RequestBody @Valid LocationRequestBody location) {
-        service.addLocation(location);
+    public ResponseEntity<String> addOne(@RequestBody @Valid LocationRequestBody requestBody) {
+        service.addLocation(requestBody);
         return ResponseEntity.ok("Location successfully added");
+    }
+
+    @PatchMapping("{id}")
+    public void changeLocation(@PathVariable int id, @RequestBody LocationRequestBody requestBody) {
+        service.updateLocation(id, requestBody);
     }
 }

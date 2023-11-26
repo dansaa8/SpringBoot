@@ -1,4 +1,4 @@
-package com.example.springboot.location;
+package com.example.springboot.location.requestbodies;
 
 import com.example.springboot.constraints.CategoryExistenceVerifier;
 import jakarta.validation.constraints.NotNull;

@@ -17,8 +17,6 @@ public class Location {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-
-
     @Size(max = 255)
     @NotNull
     @Column(name = "name", nullable = false)
