@@ -1,5 +1,7 @@
 package com.example.springboot.location;
 
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +25,8 @@ public class LocationController {
     }
 
     @PostMapping
-    public void addOne(@RequestBody LocationRequestBody location) {
-        System.out.println(location);
+    public ResponseEntity<String> addOne(@RequestBody @Valid LocationRequestBody location) {
         service.addLocation(location);
+        return ResponseEntity.ok("Location successfully added");
     }
 }

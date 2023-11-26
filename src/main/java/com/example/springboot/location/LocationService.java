@@ -67,8 +67,8 @@ public class LocationService {
         locationEntity.setIsPrivate(location.isPrivate());
         locationEntity.setCoordinate(geo);
 
-        Category category = categoryRepository.findByNameIgnoreCase(location.categoryName());
-        locationEntity.setCategory(category);
+        Optional category = categoryRepository.findByNameIgnoreCase(location.categoryName());
+        locationEntity.setCategory((Category) category.get());
 
         repository.save(locationEntity);
     }
