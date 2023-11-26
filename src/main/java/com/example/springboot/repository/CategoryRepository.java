@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 // Innehåller vanliga crud-operationer. Automatgenereras, specialanpassad kod för MySQL, genom connectionstringen.
 @Repository
 public interface CategoryRepository extends ListCrudRepository<Category, Integer> {
+    Category findByNameIgnoreCase(String name);
 }

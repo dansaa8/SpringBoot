@@ -1,12 +1,12 @@
 package com.example.springboot.requestbody;
 
-import java.awt.*;
+import jakarta.validation.constraints.NotNull;
 
 public record LocationRequestBody(
-        String name,
-        boolean isPrivate,
-        Point coordinate,
-        String description,
-        String categoryName
+        @NotNull String name,
+        @NotNull boolean isPrivate,
+        @NotNull String description,
+        @NotNull String categoryName,
+        @NotNull CoordinateRequestBody coordinate
         ) {
 }

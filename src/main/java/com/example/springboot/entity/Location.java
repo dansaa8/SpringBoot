@@ -19,7 +19,6 @@ public class Location {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    private Point<G2D> coordinate;
 
 
     @Size(max = 255)
@@ -35,6 +34,9 @@ public class Location {
     @Column(name = "is_private", nullable = false)
     private Boolean isPrivate = false;
 
+    @NotNull
+    private Point<G2D> coordinate;
+
     @Size(max = 255)
     @Column(name = "description")
     private String description;
@@ -44,6 +46,7 @@ public class Location {
 
     @Column(name = "last_modified")
     private Instant lastModified;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_category")
     private Category category;
