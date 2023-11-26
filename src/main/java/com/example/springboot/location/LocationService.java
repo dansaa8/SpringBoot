@@ -1,16 +1,14 @@
-package com.example.springboot.service;
+package com.example.springboot.location;
 
-import com.example.springboot.entity.Category;
-import com.example.springboot.entity.Location;
-import com.example.springboot.repository.CategoryRepository;
-import com.example.springboot.repository.LocationRepository;
-import com.example.springboot.requestbody.LocationRequestBody;
+import com.example.springboot.category.Category;
+import com.example.springboot.location.Location;
+import com.example.springboot.category.CategoryRepository;
+import com.example.springboot.location.LocationRepository;
+import com.example.springboot.location.LocationRequestBody;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Geometries;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.codec.Wkt;
 import org.springframework.stereotype.Service;
-import com.example.springboot.dto.LocationDto;
+import com.example.springboot.location.LocationDto;
 
 import java.util.List;
 import java.util.Optional;

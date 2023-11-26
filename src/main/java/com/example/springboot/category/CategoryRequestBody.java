@@ -1,4 +1,4 @@
-package com.example.springboot.requestbody;
+package com.example.springboot.category;
 
 import jakarta.validation.constraints.NotNull;
 

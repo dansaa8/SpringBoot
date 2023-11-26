@@ -1,9 +1,9 @@
-package com.example.springboot.service;
+package com.example.springboot.category;
 
-import com.example.springboot.dto.CategoryDto;
-import com.example.springboot.entity.Category;
-import com.example.springboot.repository.CategoryRepository;
-import com.example.springboot.requestbody.CategoryRequestBody;
+import com.example.springboot.category.CategoryDto;
+import com.example.springboot.category.Category;
+import com.example.springboot.category.CategoryRepository;
+import com.example.springboot.category.CategoryRequestBody;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

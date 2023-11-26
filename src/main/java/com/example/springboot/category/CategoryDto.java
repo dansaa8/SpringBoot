@@ -1,6 +1,6 @@
-package com.example.springboot.dto;
+package com.example.springboot.category;
 
-import com.example.springboot.entity.Category;
+import com.example.springboot.category.Category;
 
 public record CategoryDto(
         String name,

@@ -1,20 +1,19 @@
-package com.example.springboot.dto;
+package com.example.springboot.location;
 
 import com.example.springboot.Point2DSerializer;
-import com.example.springboot.dto.CategoryDto;
-import com.example.springboot.entity.Location;
+import com.example.springboot.category.CategoryDto;
+import com.example.springboot.location.Location;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.geolatte.geom.G2D;
 
-import java.awt.*;
 import java.io.Serializable;
-import org.geolatte.geom.G2D;
+
 import org.geolatte.geom.Point;
 
 /**
- * DTO for {@link com.example.springboot.entity.Location}
+ * DTO for {@link Location}
  */
 public record LocationDto(
         Integer id,

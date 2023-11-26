@@ -1,4 +1,4 @@
-package com.example.springboot.requestbody;
+package com.example.springboot.location;
 
 import jakarta.validation.constraints.NotNull;
 

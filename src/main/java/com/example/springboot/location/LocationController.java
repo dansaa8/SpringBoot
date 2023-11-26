@@ -1,9 +1,5 @@
-package com.example.springboot.controller;
+package com.example.springboot.location;
 
-import com.example.springboot.dto.LocationDto;
-import com.example.springboot.entity.Location;
-import com.example.springboot.requestbody.LocationRequestBody;
-import com.example.springboot.service.LocationService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

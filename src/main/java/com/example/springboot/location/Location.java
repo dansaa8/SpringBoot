@@ -1,14 +1,12 @@
-package com.example.springboot.entity;
+package com.example.springboot.location;
 
-import com.example.springboot.Point2DSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.example.springboot.category.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 
-import java.awt.*;
 import java.time.Instant;
 
 @Entity

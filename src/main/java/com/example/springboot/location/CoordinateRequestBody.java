@@ -1,4 +1,4 @@
-package com.example.springboot.requestbody;
+package com.example.springboot.location;
 
 public record CoordinateRequestBody(double lat, double lon) {
 }

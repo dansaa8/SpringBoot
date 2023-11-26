@@ -1,6 +1,6 @@
-package com.example.springboot.repository;
+package com.example.springboot.location;
 
-import com.example.springboot.entity.Location;
+import com.example.springboot.location.Location;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 

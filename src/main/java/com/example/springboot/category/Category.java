@@ -1,7 +1,7 @@
-package com.example.springboot.entity;
+package com.example.springboot.category;
 
+import com.example.springboot.location.Location;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;

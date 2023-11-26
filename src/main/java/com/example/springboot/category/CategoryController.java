@@ -1,9 +1,5 @@
-package com.example.springboot.controller;
+package com.example.springboot.category;
 
-import com.example.springboot.dto.CategoryDto;
-import com.example.springboot.requestbody.CategoryRequestBody;
-import com.example.springboot.service.CategoryService;
-import com.example.springboot.entity.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

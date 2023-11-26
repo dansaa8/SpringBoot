@@ -1,6 +1,6 @@
-package com.example.springboot.repository;
+package com.example.springboot.category;
 
-import com.example.springboot.entity.Category;
+import com.example.springboot.category.Category;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
