@@ -12,10 +12,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = CategoryExistenceValidator.class)
+@Constraint(validatedBy = CoordinateOkValuesValidator.class)
 @Documented
-public @interface CategoryExistenceVerifier {
-    String message() default "{The category provided doesn't exist}";
+public @interface CoordinateOkValuesVerifier {
+    String message() default "{Invalid values for the coordinate}";
 
     Class<?>[] groups() default {};
 
