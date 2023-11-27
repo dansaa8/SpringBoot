@@ -1,7 +1,10 @@
 package com.example.springboot.category;
 
+import com.example.springboot.constraints.CategoryMustNotExist;
 import jakarta.validation.constraints.NotNull;
 
-public record CategoryRequestBody (@NotNull String name, @NotNull String symbol, @NotNull String description) {
-
+public record CategoryRequestBody (
+        @NotNull @CategoryMustNotExist String name,
+        @NotNull String symbol,
+        @NotNull String description) {
 }

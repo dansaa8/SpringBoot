@@ -12,10 +12,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = CategoryExistenceValidator.class)
+@Constraint(validatedBy = CategoryMustNotExistValidator.class)
 @Documented
-public @interface CategoryExistenceVerifier {
-    String message() default "{The category provided doesn't exist}";
+public @interface CategoryMustNotExist {
+    String message() default "{A category with the same name already exist}";
 
     Class<?>[] groups() default {};
 

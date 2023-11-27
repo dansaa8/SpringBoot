@@ -5,13 +5,13 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CategoryExistenceValidator implements ConstraintValidator<CategoryExistenceVerifier, String> {
+public class CategoryMustExistValidator implements ConstraintValidator<CategoryMustExist, String> {
     @Autowired
     private CategoryRepository categoryRepository;
 
 
     @Override
-    public void initialize(CategoryExistenceVerifier constraintAnnotation) {
+    public void initialize(CategoryMustExist constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 

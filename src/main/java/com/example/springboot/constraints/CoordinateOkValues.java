@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = CoordinateOkValuesValidator.class)
 @Documented
-public @interface CoordinateOkValuesVerifier {
+public @interface CoordinateOkValues {
     String message() default "{Invalid values for the coordinate}";
 
     Class<?>[] groups() default {};

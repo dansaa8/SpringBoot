@@ -1,5 +1,6 @@
 package com.example.springboot.category;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +30,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    //Parametern vi lägger till kommer från requesten default json i SpringController
-    public void addOne(@RequestBody CategoryRequestBody category) {
-        System.out.println(category);
+    public void addOne(@RequestBody @Valid CategoryRequestBody category) {
         service.addCategory(category);
     }
 

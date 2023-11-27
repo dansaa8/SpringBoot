@@ -1,10 +1,10 @@
 package com.example.springboot.constraints;
 
-import com.example.springboot.location.requestbodies.CoordinateRequestBody;
+import com.example.springboot.location.CoordinateRequestBody;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class CoordinateOkValuesValidator implements ConstraintValidator<CoordinateOkValuesVerifier, CoordinateRequestBody> {
+public class CoordinateOkValuesValidator implements ConstraintValidator<CoordinateOkValues, CoordinateRequestBody> {
 
 
     @Override
