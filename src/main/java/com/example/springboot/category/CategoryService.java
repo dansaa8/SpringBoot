@@ -15,7 +15,7 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> getAllCategories() {
-        return repository.findAllBy();
+        return repository.findCategoryDTOAllBy();
     }
 
     public Optional<CategoryDTO> getOneCategory(Integer id) {

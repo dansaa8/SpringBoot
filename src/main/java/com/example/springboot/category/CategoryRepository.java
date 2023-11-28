@@ -14,7 +14,7 @@ public interface CategoryRepository extends ListCrudRepository<Category, Integer
 
     Optional<CategoryDTO> findCategoryDTOById(Integer id);
 
-    List<CategoryDTO> findAllBy();
+    List<CategoryDTO> findCategoryDTOAllBy();
 
     boolean existsByName(String name);
 }
