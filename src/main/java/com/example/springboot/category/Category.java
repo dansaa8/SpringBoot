@@ -27,6 +27,14 @@ public class Category {
     @Column(name = "description")
     private String description;
 
+//    public List<Location> getLocations() {
+//        return locations;
+//    }
+//
+//    public void setLocations(List<Location> locations) {
+//        this.locations = locations;
+//    }
+
     @OneToMany(mappedBy = "category") // refererar till fältnamnet i Location entiteten; inte kolumnnamn i DB
     private List<Location> locations = new ArrayList<>();
 
