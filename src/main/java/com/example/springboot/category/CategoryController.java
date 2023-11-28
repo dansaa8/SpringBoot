@@ -17,12 +17,12 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDto> getAll() {
+    public List<CategoryDTO> getAll() {
         return service.getAllCategories();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Category> getOne(@PathVariable int id) {
+    public ResponseEntity<CategoryDTO> getOne(@PathVariable int id) {
         var category = service.getOneCategory(id);
         if (category.isPresent())
             return ResponseEntity.ok().body(category.get());

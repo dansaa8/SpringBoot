@@ -1,9 +1,5 @@
 package com.example.springboot.category;
 
-import com.example.springboot.category.CategoryDto;
-import com.example.springboot.category.Category;
-import com.example.springboot.category.CategoryRepository;
-import com.example.springboot.category.CategoryRequestBody;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +14,12 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public List<CategoryDto> getAllCategories() {
-        return repository.findAll().stream()
-                .map(CategoryDto::new)
-                .toList();
+    public List<CategoryDTO> getAllCategories() {
+        return repository.findAllBy();
     }
 
-    public Optional<Category> getOneCategory(int id) {
-        return repository.findById(id);
+    public Optional<CategoryDTO> getOneCategory(Integer id) {
+        return repository.findCategoryDTOById(id);
     }
 
     public void addCategory(CategoryRequestBody category) {
