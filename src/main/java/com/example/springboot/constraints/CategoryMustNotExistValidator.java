@@ -6,18 +6,24 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CategoryMustNotExistValidator implements ConstraintValidator<CategoryMustNotExist, String> {
-        @Autowired
-        private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository repository;
 
 
-        @Override
-        public void initialize(CategoryMustNotExist constraintAnnotation) {
-            ConstraintValidator.super.initialize(constraintAnnotation);
+    @Override
+    public void initialize(CategoryMustNotExist constraintAnnotation) {
+        ConstraintValidator.super.initialize(constraintAnnotation);
+    }
+
+    @Override
+    public boolean isValid(String s, ConstraintValidatorContext context) {
+        var foundCategory = repository.findByNameIgnoreCase(s);
+        if (foundCategory.isPresent()) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("A category with the same name already exists")
+                    .addConstraintViolation();
+            return false;
         }
-
-        @Override
-        public boolean isValid(String s, ConstraintValidatorContext context) {
-            var foundCategory = categoryRepository.findByNameIgnoreCase(s);
-            return foundCategory.isEmpty();
-        }
+        return true;
+    }
 }
