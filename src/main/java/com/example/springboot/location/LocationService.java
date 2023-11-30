@@ -30,8 +30,8 @@ public class LocationService {
         return repository.findAllBy();
     }
 
-    public List<LocationDTO> getAllByCategoryId(int id) {
-        return mapToLocationDTOList(repository.findAllByCategoryId(id));
+    public List<LocationView> getAllByCategoryId(int id) {
+        return repository.findAllByCategoryId(id);
     }
 
     public List<Location> findAround(double lat, double lng, double distance) {

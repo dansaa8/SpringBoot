@@ -19,7 +19,7 @@ public interface LocationRepository extends ListCrudRepository<Location, Integer
 
     List<LocationView> findAllBy();
 
-    List<Location> findAllByCategoryId(Integer id);
+    List<LocationView> findAllByCategoryId(Integer id);
 
     @Query(value = """
             SELECT * FROM location
