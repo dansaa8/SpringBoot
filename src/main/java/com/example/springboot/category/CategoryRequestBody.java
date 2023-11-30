@@ -1,6 +1,6 @@
 package com.example.springboot.category;
 
-import com.example.springboot.constraints.CategoryMustNotExist;
+import com.example.springboot.constraint.CategoryMustNotExist;
 import jakarta.validation.constraints.NotNull;
 
 public record CategoryRequestBody (

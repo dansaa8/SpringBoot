@@ -1,4 +1,4 @@
-package com.example.springboot.constraints;
+package com.example.springboot.constraint;
 
 import com.example.springboot.category.CategoryRepository;
 import jakarta.validation.ConstraintValidator;

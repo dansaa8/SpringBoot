@@ -1,93 +1,71 @@
 package com.example.springboot.location;
 
-import com.example.springboot.category.Category;
 import com.example.springboot.category.CategoryRepository;
-import com.example.springboot.location.requestbodies.LocationRequestBody;
+import com.example.springboot.exception.DuplicateEntryException;
+import com.example.springboot.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import org.geolatte.geom.G2D;
-import org.geolatte.geom.Geometries;
+import org.geolatte.geom.Point;
+import org.geolatte.geom.builder.DSL;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
+import static com.example.springboot.location.LocationUtils.mapToLocationDTOList;
+import static com.example.springboot.location.LocationUtils.setLocationEntityProperties;
+import static org.geolatte.geom.builder.DSL.g;
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
-// när locationservice obj skapas som böna, så kommer dependency-injectorn injecta två repositories.
 @Service
 public class LocationService {
 
     private final LocationRepository repository;
     private final CategoryRepository categoryRepository;
-    // anv. när vi ska lägga till ny Location. Måste fråga om DB categoryn som ska läggas till finns
 
     public LocationService(LocationRepository repository, CategoryRepository categoryRepository) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
     }
 
-    public List<LocationDto> getAllLocations() {
-        return repository.findByIsPrivateFalse()
-                .stream()
-                .map(LocationDto::new)
-                .toList();
+    public List<LocationDTO> getAll() {
+        return mapToLocationDTOList(repository.findAll());
     }
 
-    public List<LocationDto> getAllPublicLocationsByCategory(String categoryName) {
-        return repository.findByIsPrivateFalseAndCategoryName(categoryName)
-                .stream()
-                .map(LocationDto::new)
-                .toList();
+    public List<LocationDTO> getAllByCategoryId(int id) {
+        return mapToLocationDTOList(repository.findAllByCategoryId(id));
     }
 
-    Optional<LocationDto> map(Optional<Location> location) {
-        if (location.isEmpty())
-            return Optional.empty();
-        var foundLocation = location.get();
-        return Optional.of(
-                new LocationDto(foundLocation)
-        );
+    public List<Location> findAround(double lat, double lng, double distance) {
+        Point<G2D> coordinate = DSL.point(WGS84, g(lng, lat));
+        return repository.filterOnDistance(coordinate, distance);
     }
 
-    public void addLocation(LocationRequestBody location) {
-        Location locationEntity = new Location();
+    LocationDTO getOne(int id){
+        var locationEntity  = repository.findById(id).orElseThrow(() -> new NotFoundException("Location not found"));
+        return new LocationDTO(locationEntity);
+    }
 
-        double lon = location.coordinate().lon();
-        double lat = location.coordinate().lat();
+    public void addLocation(LocationRequestBody reqBody) {
+        if (repository.existsByName(reqBody.name()))
+            throw new DuplicateEntryException("Location name already exists");
 
-        if (lat < -90 || lat > 90 || lon < -180 || lon > 180)
-            throw new IllegalArgumentException("Invalid latitude or longitude");
-
-        var geo = Geometries.mkPoint(new G2D(lon, lat), WGS84);
-
-        locationEntity.setName(location.name());
-        locationEntity.setDescription(location.name());
-        locationEntity.setIsPrivate(location.isPrivate());
-        locationEntity.setCoordinate(geo);
-
-        Optional category = categoryRepository.findByNameIgnoreCase(location.categoryName());
-        locationEntity.setCategory((Category) category.get());
-
+        var locationEntity = new Location();
+        handleLocationProcessing(locationEntity, reqBody);
         repository.save(locationEntity);
     }
 
     @Transactional
-    public void updateLocation(int id, LocationRequestBody location) {
-
-        double lon = location.coordinate().lon();
-        double lat = location.coordinate().lat();
-
-        if (lat < -90 || lat > 90 || lon < -180 || lon > 180)
-            throw new IllegalArgumentException("Invalid latitude or longitude");
-
-
-        var geo = Geometries.mkPoint(new G2D(lon, lat), WGS84);
-        var locationEntity  = repository.findById(id).orElseThrow();
-        locationEntity.setName(location.name());
-        locationEntity.setDescription(location.description());
-        locationEntity.setIsPrivate(location.isPrivate());
-        locationEntity.setCoordinate(geo);
-
-        repository.save(locationEntity); // Behövs inte, men för tydlighets skull. P.ga. @Transactional
+    public void updateLocation(int id, LocationRequestBody requestBody) {
+        var locationEntity  = repository.findById(id).orElseThrow(() -> new NotFoundException("Location not found"));
+        handleLocationProcessing(locationEntity, requestBody);
+        repository.save(locationEntity);
     }
+
+
+    private void handleLocationProcessing(Location locationEntity, LocationRequestBody reqBody) {
+        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(reqBody.categoryName())
+                .orElseThrow(() -> new NotFoundException("Category not found"));
+
+        setLocationEntityProperties(locationEntity, fkCategoryEntity, reqBody);
+    }
+
 }

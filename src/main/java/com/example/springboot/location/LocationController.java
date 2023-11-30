@@ -1,12 +1,13 @@
 package com.example.springboot.location;
 
-import com.example.springboot.constraints.LocationIdMustExist;
+import com.example.springboot.constraint.LocationIdMustExist;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/locations")
@@ -20,12 +21,30 @@ public class LocationController {
     }
 
     @GetMapping
-    List<LocationDTO> getAllPublic() { return service.getAllLocations();}
+    List<LocationDTO> getAllPublic() { return service.getAll();}
 
-//    @GetMapping("/byCategory")
-//    List<LocationDTO> getAllPublicFromCategory(@RequestParam String category) {
-//        return service.getAllPublicLocationsByCategory(category);
-//    }
+    @GetMapping("/byCategory")
+    List<LocationDTO> getAllLocations(@RequestParam Integer categoryId) {
+        return service.getAllByCategoryId(categoryId);
+    }
+
+    @GetMapping("/circle")
+    public List<Location> getLocationsInCircle(
+            @RequestParam(required = false,
+                    defaultValue = "0") double lat,
+            @RequestParam(required = false,
+                    defaultValue = "0") double lng,
+            @RequestParam(required = false,
+                    defaultValue = "0") double dist) {
+//        if (dist == 0.0)
+//            return service.getAll();
+        return service.findAround(lat, lng, dist);
+    }
+
+    @GetMapping("{id}")
+    LocationDTO getOne(@PathVariable int id) {
+        return service.getOne(id);
+    }
 
     @PostMapping
     public ResponseEntity<String> addOne(@RequestBody @Valid LocationRequestBody requestBody) {

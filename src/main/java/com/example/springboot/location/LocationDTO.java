@@ -10,6 +10,7 @@ import org.geolatte.geom.G2D;
 import java.io.Serializable;
 
 import org.geolatte.geom.Point;
+import org.hibernate.annotations.Formula;
 
 /**
  * DTO for {@link Location}
@@ -19,6 +20,11 @@ public record LocationDTO(
         String name,
         Boolean isPrivate,
         String description,
-        @JsonSerialize(using = Point2DSerializer.class) Point<G2D> coordinate
-//        CategoryDTO category
-       ) {}
+        @JsonSerialize(using = Point2DSerializer.class) Point<G2D> coordinate,
+        CategoryDTO category
+) implements Serializable{
+        public LocationDTO(Location l) {
+                this(l.getId(), l.getName(), l.getIsPrivate(), l.getDescription(), l.getCoordinate(),
+                        new CategoryDTO(l.getCategory()));
+        }
+}

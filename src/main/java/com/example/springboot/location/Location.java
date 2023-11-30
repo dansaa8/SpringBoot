@@ -1,6 +1,8 @@
 package com.example.springboot.location;
 
+import com.example.springboot.Point2DSerializer;
 import com.example.springboot.category.Category;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,6 +33,7 @@ public class Location {
     private Boolean isPrivate = false;
 
     @NotNull
+    @JsonSerialize(using = Point2DSerializer.class)
     private Point<G2D> coordinate;
 
     @Size(max = 255)
@@ -119,10 +122,5 @@ public class Location {
         this.category = category;
     }
 
-/*
-    TODO [JPA Buddy] create field to map the 'coordinate' column
-     Available actions: Define target Java type | Uncomment as is | Remove column mapping
-    @Column(name = "coordinate", columnDefinition = "geometry(0, 0) not null")
-    private Object coordinate;
-*/
+
 }

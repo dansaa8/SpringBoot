@@ -1,4 +1,4 @@
-package com.example.springboot.constraints;
+package com.example.springboot.constraint;
 
 import com.example.springboot.category.CategoryRepository;
 import jakarta.validation.ConstraintValidator;
@@ -7,17 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class CategoryMustExistValidator implements ConstraintValidator<CategoryMustExist, String> {
     @Autowired
-    private CategoryRepository categoryRepository;
-
+    private CategoryRepository repository;
 
     @Override
     public void initialize(CategoryMustExist constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext context) {
-        var foundCategory = categoryRepository.findByNameIgnoreCase(s);
-        return foundCategory.isPresent();
+    public boolean isValid(String name, ConstraintValidatorContext context) {
+        return repository.existsByName(name);
     }
 }
