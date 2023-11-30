@@ -17,6 +17,8 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends ListCrudRepository<Location, Integer> {
 
+    List<LocationView> findAllBy();
+
     List<Location> findAllByCategoryId(Integer id);
 
     @Query(value = """

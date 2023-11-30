@@ -26,8 +26,8 @@ public class LocationService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<LocationDTO> getAll() {
-        return mapToLocationDTOList(repository.findAll());
+    public List<LocationView> getAll() {
+        return repository.findAllBy();
     }
 
     public List<LocationDTO> getAllByCategoryId(int id) {

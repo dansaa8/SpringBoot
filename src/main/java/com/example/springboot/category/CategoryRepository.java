@@ -16,11 +16,11 @@ public interface CategoryRepository extends ListCrudRepository<Category, Integer
     Optional<CategoryDTO> findCategoryDTOById(Integer id);
 
 
-    @EntityGraph(attributePaths = {"places"})
-    @Query("""
-            select c from Category c join c.locations l where l.id = :id and l.isPrivate = true
-            """)
-    List<Category>findAllBy(String name);
+//    @EntityGraph(attributePaths = {"places"})
+////    @Query("""
+////            select c from Category c join c.locations l where l.id = :id and l.isPrivate = true
+////            """)
+//    List<Category>findAllBy(String name);
 
     List<CategoryDTO> findCategoryDTOAllBy();
 

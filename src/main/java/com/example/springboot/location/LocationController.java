@@ -21,7 +21,7 @@ public class LocationController {
     }
 
     @GetMapping
-    List<LocationDTO> getAllPublic() { return service.getAll();}
+    List<LocationView> getAllPublic() { return service.getAll();}
 
     @GetMapping("/byCategory")
     List<LocationDTO> getAllLocations(@RequestParam Integer categoryId) {

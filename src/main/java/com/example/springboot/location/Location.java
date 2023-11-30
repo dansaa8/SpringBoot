@@ -55,4 +55,5 @@ public class Location {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_category")
     private Category category;
+
 }
