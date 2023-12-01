@@ -24,11 +24,8 @@ public class CategoryController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CategoryView> getOne(@PathVariable int id) {
-        var category = service.getOne(id);
-        if (category.isPresent())
-            return ResponseEntity.ok().body(category.get());
-        return ResponseEntity.notFound().build();
+    CategoryView getOne(@PathVariable int id) {
+        return service.getOne(id);
     }
 
     @PostMapping
