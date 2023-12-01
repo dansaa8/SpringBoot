@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CategoryMustExistValidator implements ConstraintValidator<CategoryMustExist, String> {
+public class CategoryNameMustExistValidator implements ConstraintValidator<CategoryMustExist, String> {
     @Autowired
     private CategoryRepository repository;
 
@@ -15,7 +15,7 @@ public class CategoryMustExistValidator implements ConstraintValidator<CategoryM
 
     @Override
     public boolean isValid(String name, ConstraintValidatorContext context) {
-        if (!repository.existsByName(name)) {
+        if (!repository.existsByNameIgnoreCase(name)) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("'" + name + "' does not exist")
                     .addConstraintViolation();

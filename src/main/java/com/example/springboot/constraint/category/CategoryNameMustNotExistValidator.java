@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CategoryMustNotExistValidator implements ConstraintValidator<CategoryMustNotExist, String> {
+public class CategoryNameMustNotExistValidator implements ConstraintValidator<CategoryMustNotExist, String> {
     @Autowired
     private CategoryRepository repository;
 
@@ -16,11 +16,11 @@ public class CategoryMustNotExistValidator implements ConstraintValidator<Catego
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext context) {
-        var foundCategory = repository.findByNameIgnoreCase(s);
+    public boolean isValid(String name, ConstraintValidatorContext context) {
+        var foundCategory = repository.findByNameIgnoreCase(name);
         if (foundCategory.isPresent()) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("' " + "' already exist")
+            context.buildConstraintViolationWithTemplate("'" + name + "' already exist")
                     .addConstraintViolation();
             return false;
         }

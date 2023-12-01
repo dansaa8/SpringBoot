@@ -1,8 +1,5 @@
 package com.example.springboot.category;
 
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +10,7 @@ import java.util.Optional;
 public interface CategoryRepository extends ListCrudRepository<Category, Integer> {
     Optional<Category> findByNameIgnoreCase(String name);
 
-    Optional<CategoryDTO> findCategoryDTOById(Integer id);
+    Optional<CategoryView> findViewById(Integer id);
 
 
 //    @EntityGraph(attributePaths = {"places"})
@@ -22,7 +19,7 @@ public interface CategoryRepository extends ListCrudRepository<Category, Integer
 ////            """)
 //    List<Category>findAllBy(String name);
 
-    List<CategoryDTO> findCategoryDTOAllBy();
+    List<CategoryView> findCategoryDTOAllBy();
 
-    boolean existsByName(String name);
+    boolean existsByNameIgnoreCase(String name);
 }

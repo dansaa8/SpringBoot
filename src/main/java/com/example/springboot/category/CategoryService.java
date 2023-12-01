@@ -1,9 +1,10 @@
 package com.example.springboot.category;
 
+import com.example.springboot.exception.DuplicateEntryException;
+import com.example.springboot.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -14,16 +15,19 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public List<CategoryDTO> getAllCategories() {
+    public List<CategoryView> getAllCategories() {
         return repository.findCategoryDTOAllBy();
     }
 
-    public Optional<CategoryDTO> getOneCategory(Integer id) {
-        return repository.findCategoryDTOById(id);
+    CategoryView getOne(int id) {
+        return repository.findViewById(id).orElseThrow(() ->
+                new NotFoundException("Category with id '" + id + "' not found"));
     }
 
-    public void addCategory(CategoryRequestBody category) {
-        //Skapa entitetsobjekt
+    public void addCategory(CategoryReqBody category) {
+        if (repository.existsByNameIgnoreCase(category.name()))
+            throw new DuplicateEntryException(category.name() + " already in use.");
+
         Category categoryEntity = new Category();
         categoryEntity.setName(category.name());
         categoryEntity.setDescription(category.description());

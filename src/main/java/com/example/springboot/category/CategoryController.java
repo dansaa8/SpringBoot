@@ -19,20 +19,20 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDTO> getAll() {
+    public List<CategoryView> getAll() {
         return service.getAllCategories();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CategoryDTO> getOne(@PathVariable int id) {
-        var category = service.getOneCategory(id);
+    public ResponseEntity<CategoryView> getOne(@PathVariable int id) {
+        var category = service.getOne(id);
         if (category.isPresent())
             return ResponseEntity.ok().body(category.get());
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public void addOne(@RequestBody @Valid CategoryRequestBody category) {
+    public void addOne(@RequestBody @Valid CategoryReqBody category) {
         service.addCategory(category);
     }
 

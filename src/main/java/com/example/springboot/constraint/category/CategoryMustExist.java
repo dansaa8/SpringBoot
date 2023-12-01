@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = CategoryMustExistValidator.class)
+@Constraint(validatedBy = CategoryNameMustExistValidator.class)
 @Documented
 public @interface CategoryMustExist {
     String message() default "";

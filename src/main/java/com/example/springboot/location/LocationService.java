@@ -41,35 +41,35 @@ public class LocationService {
 
     LocationView getOne(int id){
         return repository.findViewById(id).orElseThrow(() ->
-                new NotFoundException("Location with " + id + " not found"));
+                new NotFoundException("Location with id '" + id + "' not found"));
     }
 
-    public void addLocation(LocationReqBody reqBody) {
-        if (repository.existsByName(reqBody.name()))
-            throw new DuplicateEntryException(reqBody.name() + " already in use");
+    public void addLocation(LocationReqBody location) {
+        if (repository.existsByName(location.name()))
+            throw new DuplicateEntryException(location.name() + " already in use");
 
         var locationEntity = new Location();
-        handleLocationProcessing(locationEntity, reqBody);
+        handleLocationProcessing(locationEntity, location);
         repository.save(locationEntity);
     }
 
     @Transactional
-    public void replaceLocation(int id, LocationReqBody reqBody) {
+    public void replaceLocation(int id, LocationReqBody location) {
         var locationEntity  = repository.findById(id).orElseThrow(() ->
                 new NotFoundException("Location with " + id + " not found"));
 
-        if (repository.existsByNameExcludingId(reqBody.name(), id))
-            throw new DuplicateEntryException(reqBody.name() + " already in use");
+        if (repository.existsByNameExcludingId(location.name(), id))
+            throw new DuplicateEntryException(location.name() + " already in use");
 
-        handleLocationProcessing(locationEntity, reqBody);
+        handleLocationProcessing(locationEntity, location);
         repository.save(locationEntity);
     }
 
-    private void handleLocationProcessing(Location locationEntity, LocationReqBody reqBody) {
-        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(reqBody.categoryName())
+    private void handleLocationProcessing(Location locationEntity, LocationReqBody location) {
+        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(location.categoryName())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
-        setLocationEntityProperties(locationEntity, fkCategoryEntity, reqBody);
+        setLocationEntityProperties(locationEntity, fkCategoryEntity, location);
     }
 
 }
