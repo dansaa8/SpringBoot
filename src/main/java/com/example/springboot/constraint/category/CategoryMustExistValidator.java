@@ -1,4 +1,4 @@
-package com.example.springboot.constraint;
+package com.example.springboot.constraint.category;
 
 import com.example.springboot.category.CategoryRepository;
 import jakarta.validation.ConstraintValidator;
@@ -15,6 +15,12 @@ public class CategoryMustExistValidator implements ConstraintValidator<CategoryM
 
     @Override
     public boolean isValid(String name, ConstraintValidatorContext context) {
-        return repository.existsByName(name);
+        if (!repository.existsByName(name)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("'" + name + "' does not exist")
+                    .addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.springboot.constraint;
+package com.example.springboot.constraint.category;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -12,10 +12,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = CategoryMustExistValidator.class)
+@Constraint(validatedBy = CategoryMustNotExistValidator.class)
 @Documented
-public @interface CategoryMustExist {
-    String message() default "{The category provided doesn't exist}";
+public @interface CategoryMustNotExist {
+    String message() default "";
 
     Class<?>[] groups() default {};
 

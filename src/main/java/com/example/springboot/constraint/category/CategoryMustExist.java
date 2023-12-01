@@ -1,4 +1,4 @@
-package com.example.springboot.constraint;
+package com.example.springboot.constraint.category;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -7,15 +7,15 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({PARAMETER})
+@Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = LocationIdMustExistValidator.class)
+@Constraint(validatedBy = CategoryMustExistValidator.class)
 @Documented
-public @interface LocationIdMustExist {
-    String message() default "{There is no Location with that ID}";
+public @interface CategoryMustExist {
+    String message() default "";
 
     Class<?>[] groups() default {};
 

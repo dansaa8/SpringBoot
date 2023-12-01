@@ -10,7 +10,7 @@ import org.geolatte.geom.builder.DSL;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import static com.example.springboot.location.LocationUtils.mapToLocationDTOList;
+
 import static com.example.springboot.location.LocationUtils.setLocationEntityProperties;
 import static org.geolatte.geom.builder.DSL.g;
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
@@ -39,14 +39,14 @@ public class LocationService {
         return repository.filterOnDistance(coordinate, distance);
     }
 
-    LocationDTO getOne(int id){
-        var locationEntity  = repository.findById(id).orElseThrow(() -> new NotFoundException("Location not found"));
-        return new LocationDTO(locationEntity);
+    LocationView getOne(int id){
+        return repository.findViewById(id).orElseThrow(() ->
+                new NotFoundException("Location with " + id + " not found"));
     }
 
-    public void addLocation(LocationRequestBody reqBody) {
+    public void addLocation(LocationReqBody reqBody) {
         if (repository.existsByName(reqBody.name()))
-            throw new DuplicateEntryException("Location name already exists");
+            throw new DuplicateEntryException(reqBody.name() + " already in use");
 
         var locationEntity = new Location();
         handleLocationProcessing(locationEntity, reqBody);
@@ -54,14 +54,18 @@ public class LocationService {
     }
 
     @Transactional
-    public void updateLocation(int id, LocationRequestBody requestBody) {
-        var locationEntity  = repository.findById(id).orElseThrow(() -> new NotFoundException("Location not found"));
-        handleLocationProcessing(locationEntity, requestBody);
+    public void replaceLocation(int id, LocationReqBody reqBody) {
+        var locationEntity  = repository.findById(id).orElseThrow(() ->
+                new NotFoundException("Location with " + id + " not found"));
+
+        if (repository.existsByNameExcludingId(reqBody.name(), id))
+            throw new DuplicateEntryException(reqBody.name() + " already in use");
+
+        handleLocationProcessing(locationEntity, reqBody);
         repository.save(locationEntity);
     }
 
-
-    private void handleLocationProcessing(Location locationEntity, LocationRequestBody reqBody) {
+    private void handleLocationProcessing(Location locationEntity, LocationReqBody reqBody) {
         var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(reqBody.categoryName())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 

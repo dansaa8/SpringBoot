@@ -1,4 +1,4 @@
-package com.example.springboot.constraint;
+package com.example.springboot.constraint.coordinate;
 
 import com.example.springboot.location.Coordinate;
 import jakarta.validation.ConstraintValidator;

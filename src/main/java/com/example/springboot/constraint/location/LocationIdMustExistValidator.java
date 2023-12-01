@@ -1,4 +1,4 @@
-package com.example.springboot.constraint;
+package com.example.springboot.constraint.location;
 
 import com.example.springboot.location.LocationRepository;
 import jakarta.validation.ConstraintValidator;
@@ -15,6 +15,13 @@ public class LocationIdMustExistValidator implements ConstraintValidator<Locatio
 
     @Override
     public boolean isValid(Integer id, ConstraintValidatorContext context) {
-        return repository.existsById(id);
+        boolean idExist = repository.existsById(id);
+        if (!idExist) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Location with id '" + id + "' not found")
+                    .addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 }

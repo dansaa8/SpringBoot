@@ -1,9 +1,5 @@
 package com.example.springboot.location;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import com.example.springboot.location.LocationDTO;
-import com.example.springboot.category.CategoryDTO;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +15,9 @@ public interface LocationRepository extends ListCrudRepository<Location, Integer
 
     List<LocationView> findAllBy();
 
-    List<LocationView> findAllByCategoryId(Integer id);
+    List<LocationView> findAllByCategoryId(int id);
+
+    Optional<LocationView> findViewById(int id);
 
     @Query(value = """
             SELECT * FROM location
@@ -28,11 +26,14 @@ public interface LocationRepository extends ListCrudRepository<Location, Integer
     List<Location> filterOnDistance(@Param("coordinate") Point<G2D> location, @Param("distance") double distance);
 
     @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Location l WHERE l.id = :id")
-    boolean existsById(@Param("id") Integer id);
+    boolean existsById(@Param("id") int id);
 
-    boolean existsLocationById(Integer id);
+    boolean existsLocationById(int id);
 
     boolean existsByName(String name);
+
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Location l WHERE l.name = :name AND l.id <> :excludedId")
+    boolean existsByNameExcludingId(@Param("name") String name, @Param("excludedId") int excludedId);
 }
 
 

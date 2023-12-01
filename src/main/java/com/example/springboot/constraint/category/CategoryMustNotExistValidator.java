@@ -1,4 +1,4 @@
-package com.example.springboot.constraint;
+package com.example.springboot.constraint.category;
 
 import com.example.springboot.category.CategoryRepository;
 import jakarta.validation.ConstraintValidator;
@@ -20,7 +20,7 @@ public class CategoryMustNotExistValidator implements ConstraintValidator<Catego
         var foundCategory = repository.findByNameIgnoreCase(s);
         if (foundCategory.isPresent()) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("A category with the same name already exists")
+            context.buildConstraintViolationWithTemplate("' " + "' already exist")
                     .addConstraintViolation();
             return false;
         }

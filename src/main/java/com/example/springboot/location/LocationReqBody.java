@@ -1,10 +1,10 @@
 package com.example.springboot.location;
 
-import com.example.springboot.constraint.CategoryMustExist;
-import com.example.springboot.constraint.CoordinateOkValues;
+import com.example.springboot.constraint.category.CategoryMustExist;
+import com.example.springboot.constraint.coordinate.CoordinateOkValues;
 import jakarta.validation.constraints.NotNull;
 
-public record LocationRequestBody(
+public record LocationReqBody(
         @NotNull String name,
         @NotNull boolean isPrivate,
         @NotNull String description,
