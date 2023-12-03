@@ -13,24 +13,17 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends ListCrudRepository<Location, Integer> {
 
+    @Query("SELECT l FROM Location l WHERE l.userId = ?#{principal?.username} OR l.isPrivate = FALSE")
     List<LocationView> findAllBy();
 
+    @Query("")
     List<LocationView> findAllByCategoryId(int id);
 
-    Optional<LocationView> findViewById(int id);
-
-    @Query(value = """
-            SELECT * FROM location
-            WHERE ST_Distance_Sphere(coordinate, :coordinate) < :distance
-                """, nativeQuery = true)
-    List<Location> filterOnDistance(@Param("coordinate") Point<G2D> location, @Param("distance") double distance);
-
-    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Location l WHERE l.id = :id")
-    boolean existsById(@Param("id") int id);
-
-    boolean existsLocationById(int id);
+    @Query("SELECT l FROM Location l WHERE (l.userId = ?#{principal?.username} OR l.isPrivate = FALSE) AND l.id = :id")
+    Optional<LocationView> findViewById(@Param("id") int id);
 
     boolean existsByName(String name);
+
 
     @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Location l WHERE l.name = :name AND l.id <> :excludedId")
     boolean existsByNameExcludingId(@Param("name") String name, @Param("excludedId") int excludedId);

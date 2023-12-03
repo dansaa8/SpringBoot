@@ -11,6 +11,7 @@ public interface LocationView {
     String getName();
     Boolean getIsPrivate();
     String getDescription();
+    String getUserId();
 
     @JsonSerialize(using = Point2DSerializer.class)
     Point<G2D> getCoordinate();

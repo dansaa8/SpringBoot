@@ -2,6 +2,7 @@ package com.example.springboot.category;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class CategoryController {
     }
 
     @GetMapping
+//    @PostFilter("filterObject.id = 1")
     public List<CategoryView> getAll() {
         return service.getAllCategories();
     }

@@ -34,12 +34,8 @@ public class LocationService {
         return repository.findAllByCategoryId(id);
     }
 
-    public List<Location> findAround(double lat, double lng, double distance) {
-        Point<G2D> coordinate = DSL.point(WGS84, g(lng, lat));
-        return repository.filterOnDistance(coordinate, distance);
-    }
 
-    LocationView getOne(int id){
+    public LocationView getOne(int id){
         return repository.findViewById(id).orElseThrow(() ->
                 new NotFoundException("Location with id '" + id + "' not found"));
     }

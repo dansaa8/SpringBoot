@@ -20,25 +20,13 @@ public class LocationController {
     }
 
     @GetMapping
-    List<LocationView> getAllPublic() { return service.getAll();}
+    List<LocationView> getAll() { return service.getAll();}
 
     @GetMapping("/byCategory")
     List<LocationView> getAllLocations(@RequestParam int categoryId) {
         return service.getAllByCategoryId(categoryId);
     }
 
-    @GetMapping("/circle")
-    public List<Location> getLocationsInCircle(
-            @RequestParam(required = false,
-                    defaultValue = "0") double lat,
-            @RequestParam(required = false,
-                    defaultValue = "0") double lng,
-            @RequestParam(required = false,
-                    defaultValue = "0") double dist) {
-//        if (dist == 0.0)
-//            return service.getAll();
-        return service.findAround(lat, lng, dist);
-    }
 
     @GetMapping("{id}")
     LocationView getOne(@PathVariable @LocationIdMustExist int id) {
