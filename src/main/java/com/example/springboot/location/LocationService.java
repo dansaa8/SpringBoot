@@ -4,16 +4,16 @@ import com.example.springboot.category.CategoryRepository;
 import com.example.springboot.exception.DuplicateEntryException;
 import com.example.springboot.exception.NotFoundException;
 import jakarta.transaction.Transactional;
-import org.geolatte.geom.G2D;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.builder.DSL;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.springboot.location.LocationUtils.setLocationEntityProperties;
 import static org.geolatte.geom.builder.DSL.g;
-import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 @Service
 public class LocationService {
@@ -26,19 +26,30 @@ public class LocationService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<LocationView> getAll() {
-        return repository.findAllBy();
+    public List<LocationView> getAllPublic() {
+        return repository.findByIsPrivateFalse();
     }
 
-    public List<LocationView> getAllByCategoryId(int id) {
-        return repository.findAllByCategoryId(id);
-    }
-
-
-    public LocationView getOne(int id){
-        return repository.findViewById(id).orElseThrow(() ->
+    public LocationView getOnePublic(int id){
+        return repository.findByIsPrivateFalseAndAndId(id).orElseThrow(() ->
                 new NotFoundException("Location with id '" + id + "' not found"));
     }
+
+    public List<LocationView> getAllPublicByCategory(String name) {
+        return repository.findAllByIsPrivateFalseAndCategory_Name(name);
+    }
+
+    public List<LocationView> getMyLocations(String userId) throws AccessDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(Objects.equals(authentication.getName(), userId)) {
+            return repository.findMyLocations(userId);
+        }
+        throw new AccessDeniedException("Access denied");
+    }
+
+
+
+
 
     public void addLocation(LocationReqBody location) {
         if (repository.existsByName(location.name()))
@@ -67,5 +78,6 @@ public class LocationService {
 
         setLocationEntityProperties(locationEntity, fkCategoryEntity, location);
     }
+
 
 }

@@ -13,11 +13,15 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends ListCrudRepository<Location, Integer> {
 
-    @Query("SELECT l FROM Location l WHERE l.userId = ?#{principal?.username} OR l.isPrivate = FALSE")
-    List<LocationView> findAllBy();
+    // PUBLIC
+    List<LocationView> findByIsPrivateFalse();
+    Optional<LocationView> findByIsPrivateFalseAndAndId(@Param("id") int id);
+    List<LocationView> findAllByIsPrivateFalseAndCategory_Name(@Param("name")String name);
 
-    @Query("")
-    List<LocationView> findAllByCategoryId(int id);
+
+    @Query("SELECT l FROM Location l WHERE l.userId = :id")
+    List<LocationView> findMyLocations(@Param("id") String id);
+
 
     @Query("SELECT l FROM Location l WHERE (l.userId = ?#{principal?.username} OR l.isPrivate = FALSE) AND l.id = :id")
     Optional<LocationView> findViewById(@Param("id") int id);
@@ -27,6 +31,7 @@ public interface LocationRepository extends ListCrudRepository<Location, Integer
 
     @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Location l WHERE l.name = :name AND l.id <> :excludedId")
     boolean existsByNameExcludingId(@Param("name") String name, @Param("excludedId") int excludedId);
+
 }
 
 

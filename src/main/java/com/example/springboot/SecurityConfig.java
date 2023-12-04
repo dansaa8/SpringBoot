@@ -30,14 +30,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.httpBasic(Customizer.withDefaults()).
-                authorizeHttpRequests(authorize -> authorize
+        return http
+                .httpBasic(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .headers(AbstractHttpConfigurer::disable)
+                .sessionManagement(ma -> ma.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers((HttpMethod.GET), "/api/categories").permitAll()
                         .requestMatchers((HttpMethod.POST), "/api/categories").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/api/locations").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/locations/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/locations/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/locations").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").authenticated()
                         .anyRequest().denyAll())
                 .build();
     }
