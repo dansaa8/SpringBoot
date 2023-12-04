@@ -19,7 +19,7 @@ public class LocationUtils {
         var geo = createPointGeometry(location);
 
         locationEntity.setName(location.name());
-        locationEntity.setDescription(location.name());
+        locationEntity.setDescription(location.description());
         locationEntity.setIsPrivate(location.isPrivate());
         locationEntity.setCoordinate(geo);
         locationEntity.setCategory(fkCategoryEntity);

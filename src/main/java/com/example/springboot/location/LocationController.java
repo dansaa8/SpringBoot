@@ -39,10 +39,8 @@ public class LocationController {
         return service.getMyLocations(userId);
     }
 
-
-
-    @PostMapping
-    public ResponseEntity<String> addLocation(@RequestBody @Valid LocationReqBody requestBody) {
+    @PostMapping("/locations")
+    public ResponseEntity<String> addLocation(@RequestBody @Valid LocationReqBody requestBody) throws AccessDeniedException {
         service.addLocation(requestBody);
         return ResponseEntity.ok("Location successfully added");
     }

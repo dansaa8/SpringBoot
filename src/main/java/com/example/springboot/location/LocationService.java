@@ -47,15 +47,16 @@ public class LocationService {
         throw new AccessDeniedException("Access denied");
     }
 
+    public void addLocation(LocationReqBody location) throws AccessDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated())
+            throw new AccessDeniedException("Authentication is required to add a location");
 
-
-
-
-    public void addLocation(LocationReqBody location) {
         if (repository.existsByName(location.name()))
             throw new DuplicateEntryException(location.name() + " already in use");
 
         var locationEntity = new Location();
+        locationEntity.setUserId(authentication.getName());
         handleLocationProcessing(locationEntity, location);
         repository.save(locationEntity);
     }
