@@ -12,6 +12,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.springboot.location.LocationUtils.getAuthenticatedUserOrThrowAccessDeniedException;
 import static com.example.springboot.location.LocationUtils.setLocationEntityProperties;
 import static org.geolatte.geom.builder.DSL.g;
 
@@ -48,26 +49,23 @@ public class LocationService {
     }
 
     public void addLocation(LocationReqBody location) throws AccessDeniedException {
-        Authentication authUser = getAuthenticatedUserOrThrowAccessDeniedException();
+        Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
 
         if (repository.existsByName(location.name()))
             throw new DuplicateEntryException(location.name() + " already in use");
 
         var locationEntity = new Location();
-        locationEntity.setUserId(authUser.getName());
+        locationEntity.setUserId(user.getName());
         handleLocationProcessing(locationEntity, location);
         repository.save(locationEntity);
     }
 
     @Transactional
     public void replaceLocation(int id, LocationReqBody location) throws AccessDeniedException {
-        Authentication authUser = getAuthenticatedUserOrThrowAccessDeniedException();
+        Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
 
-        if (!repository.isUserOwningEntity(id, authUser.getName()))
-            throw new AccessDeniedException("Access denied");
-
-        var locationEntity  = repository.findById(id).orElseThrow(() ->
-                new NotFoundException("Location with " + id + " not found"));
+        var locationEntity = repository.findLocationByUserIdAndId(user.getName(), id).orElseThrow(() ->
+                new AccessDeniedException("Access denied"));
 
         if (repository.existsByNameExcludingId(location.name(), id))
             throw new DuplicateEntryException(location.name() + " already in use");
@@ -76,20 +74,20 @@ public class LocationService {
         repository.save(locationEntity);
     }
 
+    @Transactional
+    public void deleteLocation(int id) throws AccessDeniedException {
+        Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
+
+        var locationEntity = repository.findLocationByUserIdAndId(user.getName(), id).orElseThrow(() ->
+                new AccessDeniedException("Access denied"));
+
+        repository.delete(locationEntity);
+    }
+
     private void handleLocationProcessing(Location locationEntity, LocationReqBody locationReqBody) {
         var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(locationReqBody.categoryName())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
         setLocationEntityProperties(locationEntity, fkCategoryEntity, locationReqBody);
     }
-
-    private Authentication getAuthenticatedUserOrThrowAccessDeniedException() throws AccessDeniedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            throw new AccessDeniedException("Authentication is required");
-        }
-        return authentication;
-    }
-
-
 }

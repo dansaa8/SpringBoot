@@ -29,9 +29,10 @@ public interface LocationRepository extends ListCrudRepository<Location, Integer
             "WHERE l.name = :name AND l.id <> :excludedId")
     boolean existsByNameExcludingId(@Param("name") String name, @Param("excludedId") int excludedId);
 
-    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Location l " +
-            "WHERE l.id = :id AND l.userId = :userId")
-    boolean isUserOwningEntity(@Param("id") int id, @Param("userId") String userId);
+
+    @Query("SELECT l FROM Location l WHERE l.userId = :userId AND l.id = :id")
+    Optional<Location> findLocationByUserIdAndId(@Param("userId") String userId, @Param("id") int id);
+
 
     boolean existsByName(String name);
 

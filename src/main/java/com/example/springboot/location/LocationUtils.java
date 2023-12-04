@@ -4,6 +4,10 @@ import com.example.springboot.category.Category;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Geometries;
 import org.geolatte.geom.Point;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.nio.file.AccessDeniedException;
 
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
@@ -29,5 +33,13 @@ public class LocationUtils {
         return Geometries.mkPoint(
                 new G2D(location.coordinate().lon(),
                         location.coordinate().lat()), WGS84);
+    }
+
+    public static Authentication getAuthenticatedUserOrThrowAccessDeniedException() throws AccessDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Authentication is required");
+        }
+        return authentication;
     }
 }

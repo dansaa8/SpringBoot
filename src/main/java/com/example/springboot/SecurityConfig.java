@@ -43,8 +43,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/locations").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/locations/**").permitAll()
 
+                        // Authenticated
                         .requestMatchers(HttpMethod.POST, "/api/locations").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/locations/*").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/locations/*").authenticated()
 
                         .requestMatchers(HttpMethod.GET, "/api/users/**").authenticated()
                         .anyRequest().denyAll())

@@ -51,4 +51,9 @@ public class LocationController {
             @RequestBody @Valid LocationReqBody requestBody) throws AccessDeniedException {
         service.replaceLocation(id, requestBody);
     }
+
+    @DeleteMapping("/locations/{id}")
+    public void deleteLocation(@PathVariable @Valid @LocationIdMustExist int id) throws AccessDeniedException {
+        service.deleteLocation(id);
+    }
 }
