@@ -45,10 +45,10 @@ public class LocationController {
         return ResponseEntity.ok("Location successfully added");
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/locations{id}")
     public void replaceLocation(
             @PathVariable @Valid @LocationIdMustExist int id,
-            @RequestBody @Valid LocationReqBody requestBody) {
+            @RequestBody @Valid LocationReqBody requestBody) throws AccessDeniedException {
         service.replaceLocation(id, requestBody);
     }
 }
