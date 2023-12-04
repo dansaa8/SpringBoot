@@ -23,7 +23,7 @@ public class LocationController {
     @GetMapping("/locations")
     List<LocationView> getAllPublic() { return service.getAllPublic();}
 
-    @GetMapping("/locations{id}")
+    @GetMapping("/locations/{id}")
     LocationView getOnePublic(@PathVariable @LocationIdMustExist int id) {
         return service.getOnePublic(id);
     }
@@ -45,7 +45,7 @@ public class LocationController {
         return ResponseEntity.ok("Location successfully added");
     }
 
-    @PutMapping("/locations{id}")
+    @PutMapping("/locations/{id}")
     public void replaceLocation(
             @PathVariable @Valid @LocationIdMustExist int id,
             @RequestBody @Valid LocationReqBody requestBody) throws AccessDeniedException {

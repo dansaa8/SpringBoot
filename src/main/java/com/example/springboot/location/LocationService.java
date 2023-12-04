@@ -48,21 +48,24 @@ public class LocationService {
     }
 
     public void addLocation(LocationReqBody location) throws AccessDeniedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated())
-            throw new AccessDeniedException("Authentication is required to add a location");
+        Authentication authUser = getAuthenticatedUserOrThrowAccessDeniedException();
 
         if (repository.existsByName(location.name()))
             throw new DuplicateEntryException(location.name() + " already in use");
 
         var locationEntity = new Location();
-        locationEntity.setUserId(authentication.getName());
+        locationEntity.setUserId(authUser.getName());
         handleLocationProcessing(locationEntity, location);
         repository.save(locationEntity);
     }
 
     @Transactional
-    public void replaceLocation(int id, LocationReqBody location) {
+    public void replaceLocation(int id, LocationReqBody location) throws AccessDeniedException {
+        Authentication authUser = getAuthenticatedUserOrThrowAccessDeniedException();
+
+        if (!repository.isUserOwningEntity(id, authUser.getName()))
+            throw new AccessDeniedException("Access denied");
+
         var locationEntity  = repository.findById(id).orElseThrow(() ->
                 new NotFoundException("Location with " + id + " not found"));
 
@@ -73,11 +76,19 @@ public class LocationService {
         repository.save(locationEntity);
     }
 
-    private void handleLocationProcessing(Location locationEntity, LocationReqBody location) {
-        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(location.categoryName())
+    private void handleLocationProcessing(Location locationEntity, LocationReqBody locationReqBody) {
+        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(locationReqBody.categoryName())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
-        setLocationEntityProperties(locationEntity, fkCategoryEntity, location);
+        setLocationEntityProperties(locationEntity, fkCategoryEntity, locationReqBody);
+    }
+
+    private Authentication getAuthenticatedUserOrThrowAccessDeniedException() throws AccessDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Authentication is required");
+        }
+        return authentication;
     }
 
 
