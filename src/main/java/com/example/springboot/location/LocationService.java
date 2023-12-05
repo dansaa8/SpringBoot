@@ -3,7 +3,11 @@ package com.example.springboot.location;
 import com.example.springboot.category.CategoryRepository;
 import com.example.springboot.exception.DuplicateEntryException;
 import com.example.springboot.exception.NotFoundException;
+import com.example.springboot.location.request.LocationUpdateRequest;
 import jakarta.transaction.Transactional;
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Point;
+import org.geolatte.geom.builder.DSL;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import java.util.Objects;
 import static com.example.springboot.location.LocationUtils.getAuthenticatedUserOrThrowAccessDeniedException;
 import static com.example.springboot.location.LocationUtils.setLocationEntityProperties;
 import static org.geolatte.geom.builder.DSL.g;
+import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 @Service
 public class LocationService {
@@ -31,16 +36,17 @@ public class LocationService {
         return repository.findByIsPrivateFalse();
     }
 
-    public LocationView getOnePublic(int id){
-        return repository.findByIsPrivateFalseAndAndId(id).orElseThrow(() ->
-                new NotFoundException("Location with id '" + id + "' not found"));
-    }
 
-    public List<LocationView> getAllPublicByCategory(String name) {
+    public List<LocationView> getPublicByCategory(String name) {
         return repository.findAllByIsPrivateFalseAndCategory_Name(name);
     }
 
-    public List<LocationView> getMyLocations(String userId) throws AccessDeniedException {
+    public List<LocationView> getPublicInRadius(double lat, double lon, double distance) {
+        Point<G2D> coordinate = DSL.point(WGS84, g(lon, lat));
+        return repository.filterOnDistance(coordinate, distance);
+    }
+
+    public List<LocationView> getUserLocations(String userId) throws AccessDeniedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(Objects.equals(authentication.getName(), userId)) {
             return repository.findMyLocations(userId);
@@ -48,7 +54,12 @@ public class LocationService {
         throw new AccessDeniedException("Access denied");
     }
 
-    public void addLocation(LocationReqBody location) throws AccessDeniedException {
+    public LocationView getOnePublic(int id){
+        return repository.findByIsPrivateFalseAndAndId(id).orElseThrow(() ->
+                new NotFoundException("Location with id '" + id + "' not found"));
+    }
+
+    public void add(LocationUpdateRequest location) throws AccessDeniedException {
         Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
 
         if (repository.existsByName(location.name()))
@@ -61,7 +72,7 @@ public class LocationService {
     }
 
     @Transactional
-    public void replaceLocation(int id, LocationReqBody location) throws AccessDeniedException {
+    public void update(int id, LocationUpdateRequest location) throws AccessDeniedException {
         Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
 
         var locationEntity = repository.findLocationByUserIdAndId(user.getName(), id).orElseThrow(() ->
@@ -75,7 +86,7 @@ public class LocationService {
     }
 
     @Transactional
-    public void deleteLocation(int id) throws AccessDeniedException {
+    public void delete(int id) throws AccessDeniedException {
         Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
 
         var locationEntity = repository.findLocationByUserIdAndId(user.getName(), id).orElseThrow(() ->
@@ -84,10 +95,10 @@ public class LocationService {
         repository.delete(locationEntity);
     }
 
-    private void handleLocationProcessing(Location locationEntity, LocationReqBody locationReqBody) {
-        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(locationReqBody.categoryName())
+    private void handleLocationProcessing(Location locationEntity, LocationUpdateRequest locationUpdateRequest) {
+        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(locationUpdateRequest.categoryName())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
-        setLocationEntityProperties(locationEntity, fkCategoryEntity, locationReqBody);
+        setLocationEntityProperties(locationEntity, fkCategoryEntity, locationUpdateRequest);
     }
 }

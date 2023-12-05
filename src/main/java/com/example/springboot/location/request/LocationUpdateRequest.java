@@ -1,14 +1,14 @@
-package com.example.springboot.location;
+package com.example.springboot.location.request;
 
 import com.example.springboot.constraint.category.CategoryMustExist;
 import com.example.springboot.constraint.coordinate.CoordinateOkValues;
 import jakarta.validation.constraints.NotNull;
 
-public record LocationReqBody(
+public record LocationUpdateRequest(
         @NotNull String name,
         @NotNull boolean isPrivate,
         @NotNull String description,
         @NotNull @CategoryMustExist String categoryName,
-        @NotNull @CoordinateOkValues Coordinate coordinate
+        @NotNull Coordinate coordinate
         ) {
 }

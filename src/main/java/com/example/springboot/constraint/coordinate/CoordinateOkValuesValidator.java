@@ -1,6 +1,6 @@
 package com.example.springboot.constraint.coordinate;
 
-import com.example.springboot.location.Coordinate;
+import com.example.springboot.location.request.Coordinate;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

@@ -1,7 +1,12 @@
 package com.example.springboot.location;
 
+import com.example.springboot.constraint.coordinate.Latitude;
+import com.example.springboot.constraint.coordinate.Longitude;
 import com.example.springboot.constraint.location.LocationIdMustExist;
+import com.example.springboot.location.request.LocationUpdateRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,39 +26,46 @@ public class LocationController {
     }
 
     @GetMapping("/locations")
-    List<LocationView> getAllPublic() { return service.getAllPublic();}
+    public List<LocationView> getAllPublicLocations() { return service.getAllPublic();}
 
     @GetMapping("/locations/{id}")
-    LocationView getOnePublic(@PathVariable @LocationIdMustExist int id) {
+    public LocationView getOnePublicLocation(@PathVariable @LocationIdMustExist int id) {
         return service.getOnePublic(id);
     }
 
-
     @GetMapping(path = "/locations", params = "categoryName")
-    List<LocationView> getAllLocations(@RequestParam String categoryName) {
-        return service.getAllPublicByCategory(categoryName);
+    public List<LocationView> getPublicLocationsByCategory(@RequestParam String categoryName) {
+        return service.getPublicByCategory(categoryName);
+    }
+
+    @GetMapping(value = "/locations", params = {"lat", "lon", "distance"})
+    public List<LocationView> getPublicLocationsInRadius(
+            @RequestParam @Latitude double lat,
+            @RequestParam @Longitude double lon,
+            @RequestParam @NotNull @Min(0) double distance) {
+        return service.getPublicInRadius(lat, lon, distance);
     }
 
     @GetMapping("/users/{userId}/locations")
-    List<LocationView> getMyLocations(@PathVariable String userId) throws AccessDeniedException {
-        return service.getMyLocations(userId);
+    public List<LocationView> getUserLocations(@PathVariable String userId) throws AccessDeniedException {
+        return service.getUserLocations(userId);
     }
 
     @PostMapping("/locations")
-    public ResponseEntity<String> addLocation(@RequestBody @Valid LocationReqBody requestBody) throws AccessDeniedException {
-        service.addLocation(requestBody);
+    public ResponseEntity<String> addLocation(@RequestBody @Valid LocationUpdateRequest requestBody) throws AccessDeniedException {
+        service.add(requestBody);
         return ResponseEntity.ok("Location successfully added");
     }
 
     @PutMapping("/locations/{id}")
-    public void replaceLocation(
+    public void updateLocation(
             @PathVariable @Valid @LocationIdMustExist int id,
-            @RequestBody @Valid LocationReqBody requestBody) throws AccessDeniedException {
-        service.replaceLocation(id, requestBody);
+            @RequestBody @Valid LocationUpdateRequest requestBody) throws AccessDeniedException {
+        service.update(id, requestBody);
     }
 
     @DeleteMapping("/locations/{id}")
     public void deleteLocation(@PathVariable @Valid @LocationIdMustExist int id) throws AccessDeniedException {
-        service.deleteLocation(id);
+        service.delete(id);
     }
 }

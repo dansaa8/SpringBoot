@@ -1,5 +1,7 @@
 package com.example.springboot.location;
 
+import org.geolatte.geom.G2D;
+import org.geolatte.geom.Point;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -37,7 +39,10 @@ public interface LocationRepository extends ListCrudRepository<Location, Integer
     boolean existsByName(String name);
 
 
-
+    @Query("SELECT l FROM Location l " +
+            "WHERE FUNCTION('ST_Distance_Sphere', l.coordinate, :coordinate) < :distance " +
+            "AND l.isPrivate = false")
+    List<LocationView> filterOnDistance(Point<G2D> coordinate, double distance);
 }
 
 
