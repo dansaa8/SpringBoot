@@ -1,8 +1,6 @@
 package com.example.springboot.category;
 
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,18 +18,17 @@ public class CategoryController {
     }
 
     @GetMapping
-//    @PostFilter("filterObject.id = 1")
-    public List<CategoryView> getAll() {
-        return service.getAllCategories();
+    public List<CategoryView> getAllCategories() {
+        return service.getAll();
     }
 
     @GetMapping("{id}")
-    CategoryView getOne(@PathVariable int id) {
+    CategoryView getOneCategory(@PathVariable int id) {
         return service.getOne(id);
     }
 
     @PostMapping
-    public void addOne(@RequestBody @Valid CategoryReqBody category) {
+    public void addOneCategory(@RequestBody @Valid CategoryUpdateRequest category) {
         service.addCategory(category);
     }
 

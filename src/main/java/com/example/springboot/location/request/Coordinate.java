@@ -1,7 +1,7 @@
 package com.example.springboot.location.request;
 
-import com.example.springboot.constraint.coordinate.CoordinateOkValues;
+import com.example.springboot.constraint.coordinate.Latitude;
+import com.example.springboot.constraint.coordinate.Longitude;
 
-@CoordinateOkValues
-public record Coordinate(double lat, double lon) {
+public record Coordinate(@Latitude double lat, @Longitude double lon) {
 }

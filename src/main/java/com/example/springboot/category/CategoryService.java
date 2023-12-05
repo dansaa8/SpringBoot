@@ -15,8 +15,8 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public List<CategoryView> getAllCategories() {
-        return repository.findCategoryDTOAllBy();
+    public List<CategoryView> getAll() {
+        return repository.findAllBy();
     }
 
     CategoryView getOne(int id) {
@@ -24,9 +24,9 @@ public class CategoryService {
                 new NotFoundException("Category with id '" + id + "' not found"));
     }
 
-    public void addCategory(CategoryReqBody category) {
+    public void addCategory(CategoryUpdateRequest category) {
         if (repository.existsByNameIgnoreCase(category.name()))
-            throw new DuplicateEntryException(category.name() + " already in use.");
+            throw new DuplicateEntryException(category.name() + " already in use");
 
         Category categoryEntity = new Category();
         categoryEntity.setName(category.name());

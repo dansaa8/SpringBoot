@@ -1,7 +1,6 @@
 package com.example.springboot.location.request;
 
 import com.example.springboot.constraint.category.CategoryMustExist;
-import com.example.springboot.constraint.coordinate.CoordinateOkValues;
 import jakarta.validation.constraints.NotNull;
 
 public record LocationUpdateRequest(

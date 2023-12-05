@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .sessionManagement(ma -> ma.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers((HttpMethod.GET), "/api/categories").permitAll()
+                        .requestMatchers((HttpMethod.GET), "/api/categories/*").permitAll()
                         .requestMatchers((HttpMethod.POST), "/api/categories").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/api/locations").permitAll()
