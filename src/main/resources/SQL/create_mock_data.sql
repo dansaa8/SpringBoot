@@ -4,7 +4,7 @@ INSERT INTO category (id, name, symbol, description)
 VALUES (1, 'GroceryStore', 'Boutique', 'En plats att köpa livsmedel');
 
 INSERT INTO category (id, name, symbol, description)
-VALUES (2, 'BlueberrySpot', 'Bus', 'A place to pick blueberries');
+VALUES (2, 'BlueberrySpot', 'Blueberry', 'A place to pick blueberries');
 
 INSERT INTO category(id, name, symbol, description)
 VALUES(3, 'BadPlats', 'Wave', 'En plats att svalka sig');
@@ -48,7 +48,7 @@ VALUES (
            4,
            'Ica supermarket knalleland',
            'bertil',
-           true,
+           false,
            ST_GeomFromText('POINT(57.732616875599746 12.938208605777922)', 4326),
            'Detta ställe bör alla känna till!',
            1);
@@ -58,7 +58,7 @@ VALUES (
            5,
            'Coop Sjöbo Torg',
            'bertil',
-           false,
+           true,
            ST_GeomFromText('POINT(57.749657569208054 12.944105444901174)', 4326),
            'Detta ställe vill jag hålla privat',
            1);
