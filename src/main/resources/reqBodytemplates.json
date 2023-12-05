@@ -19,7 +19,19 @@
       "lat": 57.68819,
       "lon": 11.94114
    }
-}
+},
+
+
+   {
+      "name": "Älghägnet",
+      "isPrivate": true,
+      "description": "Djurpark mitt i gröten",
+      "categoryName": "Djurpark",
+      "coordinate": {
+         "lat": 57.68542,
+         "lon": 11.94004
+      }
+   }
 
 
    ]
