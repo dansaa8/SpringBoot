@@ -1,0 +1,25 @@
+
+[
+
+
+{
+   "name": "Badplats",
+   "symbol": "VattenSymbol",
+   "description": "Tat lugnt så du inte drunknar"
+},
+
+
+
+{
+   "name": "Slottsskogens djurpark",
+   "isPrivate": false,
+   "description": "Djurpark mitt i gröten",
+   "categoryName": "Djurpark",
+   "coordinate": {
+      "lat": 57.68819,
+      "lon": 11.94114
+   }
+}
+
+
+   ]
