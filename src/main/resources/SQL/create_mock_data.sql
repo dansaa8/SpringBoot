@@ -1,47 +1,74 @@
 USE geo_POI;
 
 INSERT INTO category (id, name, symbol, description)
-VALUES (1, 'Playground', 'PG_Symbol', 'A place for the kids to play');
+VALUES (1, 'GroceryStore', 'Boutique', 'En plats att köpa livsmedel');
 
 INSERT INTO category (id, name, symbol, description)
-VALUES (2, 'GroceryStore', 'GS_Symbol', 'A place to buy groceries');
+VALUES (2, 'BlueberrySpot', 'Bus', 'A place to pick blueberries');
 
-INSERT INTO category (id, name, symbol, description)
-VALUES (3, 'BusStop', 'Bus_Symbol', 'A point to board a bus');
+INSERT INTO category(id, name, symbol, description)
+VALUES(3, 'BadPlats', 'Wave', 'En plats att svalka sig');
 
-INSERT INTO location(id, name, user_id, is_private, coordinate, description, created_at, last_modified, fk_category)
+INSERT INTO category(id, name, symbol, description)
+VALUES(4, 'DjurPark', 'Lion', 'En plats att åskåda exotiska djur');
+
+INSERT INTO location(id, name, user_id, is_private, coordinate, description, fk_category)
 VALUES (
            1,
-           'Borås Resecentrum',
-           'Kungen',
+           'Borås Djurpark',
+           'ingrid',
            false,
-           ST_GeomFromText('POINT(57.72007071572413 12.932595441618504)', 4326),
-           'Travel Center',
-           '2021-02-03',
-           '2021-02-04',
-           3);
+           ST_GeomFromText('POINT(57.74148690409042 12.941680727659872)', 4326),
+           'Fin djurpark',
+           4);
 
-INSERT INTO location(id, name, user_id, is_private, coordinate, description, created_at, last_modified, fk_category)
+INSERT INTO location(id, name, user_id, is_private, coordinate, description, fk_category)
 VALUES (
            2,
-           'Lekplats Lindormsgatan',
-           'Drottningen',
+           'Coop Sjöbo Torg',
+           'ingrid',
            false,
-           ST_GeomFromText('POINT(57.72007071572413 12.932595441618504)', 4326),
-           'Small playground',
-           '2022-04-03',
-           '2023-02-26',
+           ST_GeomFromText('POINT(57.749657569208054 12.944105444901174)', 4326),
+           'Litet ställe, inte jättestort utbud',
            1);
 
-INSERT INTO location(id, name, user_id, is_private, coordinate, description, created_at, last_modified, fk_category)
+INSERT INTO location(id, name, user_id, is_private, coordinate, description, fk_category)
 VALUES (
            3,
-           'Öresjös matbutik',
-           'Knekten',
+           'Mitt superhemliga blåbärs-ställe',
+           'ingrid',
            true,
-           #andra param format på det vi matar in. Är det annat format än det vi har i DB, så konverteras det automatiskt.
-           ST_GeomFromText('POINT(57.76426277348248 12.946753643258686)', 4326),
-           'Secret grocery store',
-           '1977-06-17',
-           '1999-12-24',
+           ST_GeomFromText('POINT(57.754134333358294 12.924385843691052)', 4326),
+           'SUPERHEMLIGT, DETTA STÄLLE FÅR ABSOLUT INTE KOMMA UT PUBLIKT',
+           2);
+
+
+INSERT INTO location(id, name, user_id, is_private, coordinate, description, fk_category)
+VALUES (
+           4,
+           'Ica supermarket knalleland',
+           'bertil',
+           true,
+           ST_GeomFromText('POINT(57.732616875599746 12.938208605777922)', 4326),
+           'Detta ställe bör alla känna till!',
+           1);
+
+INSERT INTO location(id, name, user_id, is_private, coordinate, description, fk_category)
+VALUES (
+           5,
+           'Coop Sjöbo Torg',
+           'bertil',
+           false,
+           ST_GeomFromText('POINT(57.749657569208054 12.944105444901174)', 4326),
+           'Detta ställe vill jag hålla privat',
+           1);
+
+INSERT INTO location(id, name, user_id, is_private, coordinate, description, fk_category)
+VALUES (
+           6,
+           'Blåbäääääär',
+           'bertil',
+           false,
+           ST_GeomFromText('POINT(57.7453661769841 12.965835357100056)', 4326),
+           'Det finns så mycket blåbär här, att alla bör känna till detta stället',
            2);

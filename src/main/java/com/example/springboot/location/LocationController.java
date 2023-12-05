@@ -3,7 +3,7 @@ package com.example.springboot.location;
 import com.example.springboot.constraint.coordinate.Latitude;
 import com.example.springboot.constraint.coordinate.Longitude;
 import com.example.springboot.constraint.location.LocationIdMustExist;
-import com.example.springboot.location.request.LocationUpdateRequest;
+import com.example.springboot.location.request.LocationRequestBody;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -52,7 +52,7 @@ public class LocationController {
     }
 
     @PostMapping("/locations")
-    public ResponseEntity<String> addLocation(@RequestBody @Valid LocationUpdateRequest requestBody) throws AccessDeniedException {
+    public ResponseEntity<String> addLocation(@RequestBody @Valid LocationRequestBody requestBody) throws AccessDeniedException {
         service.add(requestBody);
         return ResponseEntity.ok("Location successfully added");
     }
@@ -60,7 +60,7 @@ public class LocationController {
     @PutMapping("/locations/{id}")
     public void updateLocation(
             @PathVariable @Valid @LocationIdMustExist int id,
-            @RequestBody @Valid LocationUpdateRequest requestBody) throws AccessDeniedException {
+            @RequestBody @Valid LocationRequestBody requestBody) throws AccessDeniedException {
         service.update(id, requestBody);
     }
 

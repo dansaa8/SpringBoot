@@ -1,7 +1,7 @@
 package com.example.springboot.location;
 
 import com.example.springboot.category.Category;
-import com.example.springboot.location.request.LocationUpdateRequest;
+import com.example.springboot.location.request.LocationRequestBody;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Geometries;
 import org.geolatte.geom.Point;
@@ -19,7 +19,7 @@ public class LocationUtils {
     public static void setLocationEntityProperties(
             Location locationEntity,
             Category fkCategoryEntity,
-            LocationUpdateRequest location) {
+            LocationRequestBody location) {
 
         var geo = createPointGeometry(location);
 
@@ -30,13 +30,13 @@ public class LocationUtils {
         locationEntity.setCategory(fkCategoryEntity);
     }
 
-    private static Point<G2D> createPointGeometry(LocationUpdateRequest location) {
+    private static Point<G2D> createPointGeometry(LocationRequestBody location) {
         return Geometries.mkPoint(
                 new G2D(location.coordinate().lon(),
                         location.coordinate().lat()), WGS84);
     }
 
-    public static Authentication getAuthenticatedUserOrThrowAccessDeniedException() throws AccessDeniedException {
+    public static Authentication getAuthenticatedUserOrThrow() throws AccessDeniedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.isAuthenticated()) {
             throw new AccessDeniedException("Authentication is required");

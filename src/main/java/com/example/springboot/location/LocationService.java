@@ -1,22 +1,20 @@
 package com.example.springboot.location;
 
 import com.example.springboot.category.CategoryRepository;
-import com.example.springboot.exception.DuplicateEntryException;
 import com.example.springboot.exception.NotFoundException;
-import com.example.springboot.location.request.LocationUpdateRequest;
+import com.example.springboot.location.request.LocationRequestBody;
 import jakarta.transaction.Transactional;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 import org.geolatte.geom.builder.DSL;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.example.springboot.location.LocationUtils.getAuthenticatedUserOrThrowAccessDeniedException;
+import static com.example.springboot.location.LocationUtils.getAuthenticatedUserOrThrow;
 import static com.example.springboot.location.LocationUtils.setLocationEntityProperties;
 import static org.geolatte.geom.builder.DSL.g;
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
@@ -46,24 +44,22 @@ public class LocationService {
         return repository.filterOnDistance(coordinate, distance);
     }
 
-    public List<LocationView> getUserLocations(String userId) throws AccessDeniedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(Objects.equals(authentication.getName(), userId)) {
-            return repository.findMyLocations(userId);
-        }
-        throw new AccessDeniedException("Access denied");
-    }
-
     public LocationView getOnePublic(int id){
         return repository.findByIsPrivateFalseAndAndId(id).orElseThrow(() ->
                 new NotFoundException("Location with id '" + id + "' not found"));
     }
 
-    public void add(LocationUpdateRequest location) throws AccessDeniedException {
-        Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
+    public List<LocationView> getUserLocations(String userId) throws AccessDeniedException {
+        Authentication user = getAuthenticatedUserOrThrow();
 
-        if (repository.existsByName(location.name()))
-            throw new DuplicateEntryException(location.name() + " already in use");
+        if(Objects.equals(user.getName(), userId)) {
+            return repository.findMyLocations(userId);
+        }
+        throw new AccessDeniedException("Access denied");
+    }
+
+    public void add(LocationRequestBody location) throws AccessDeniedException {
+        Authentication user = getAuthenticatedUserOrThrow();
 
         var locationEntity = new Location();
         locationEntity.setUserId(user.getName());
@@ -72,14 +68,10 @@ public class LocationService {
     }
 
     @Transactional
-    public void update(int id, LocationUpdateRequest location) throws AccessDeniedException {
-        Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
+    public void update(int id, LocationRequestBody location) throws AccessDeniedException {
+        Authentication user = getAuthenticatedUserOrThrow();
 
-        var locationEntity = repository.findLocationByUserIdAndId(user.getName(), id).orElseThrow(() ->
-                new AccessDeniedException("Access denied"));
-
-        if (repository.existsByNameExcludingId(location.name(), id))
-            throw new DuplicateEntryException(location.name() + " already in use");
+        var locationEntity = findOwnedLocationOrThrow(user.getName(), id);
 
         handleLocationProcessing(locationEntity, location);
         repository.save(locationEntity);
@@ -87,18 +79,22 @@ public class LocationService {
 
     @Transactional
     public void delete(int id) throws AccessDeniedException {
-        Authentication user = getAuthenticatedUserOrThrowAccessDeniedException();
+        Authentication user = getAuthenticatedUserOrThrow();
 
-        var locationEntity = repository.findLocationByUserIdAndId(user.getName(), id).orElseThrow(() ->
-                new AccessDeniedException("Access denied"));
+        var locationEntity = findOwnedLocationOrThrow(user.getName(), id);
 
         repository.delete(locationEntity);
     }
 
-    private void handleLocationProcessing(Location locationEntity, LocationUpdateRequest locationUpdateRequest) {
-        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(locationUpdateRequest.categoryName())
+    private void handleLocationProcessing(Location locationEntity, LocationRequestBody locationRequestBody) {
+        var fkCategoryEntity = categoryRepository.findByNameIgnoreCase(locationRequestBody.categoryName())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
 
-        setLocationEntityProperties(locationEntity, fkCategoryEntity, locationUpdateRequest);
+        setLocationEntityProperties(locationEntity, fkCategoryEntity, locationRequestBody);
+    }
+
+    private Location findOwnedLocationOrThrow(String userId, Integer locationId) throws AccessDeniedException {
+        return repository.findLocationByUserIdAndId(userId, locationId)
+                .orElseThrow(() -> new AccessDeniedException("Access denied"));
     }
 }

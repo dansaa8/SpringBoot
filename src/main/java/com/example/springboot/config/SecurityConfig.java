@@ -1,4 +1,4 @@
-package com.example.springboot;
+package com.example.springboot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,17 +58,24 @@ public class SecurityConfig {
     @Description("In memory Userdetails service registered")
     public UserDetailsService users(PasswordEncoder encoder) {
         // The builder will ensure the passwords are encoded before saving in memory
-        UserDetails user = User.builder()
-                .username("user")
+        UserDetails ingrid = User.builder()
+                .username("ingrid")
                 .password(encoder.encode("password"))
                 .roles("USER")
                 .build();
+
+        UserDetails bertil = User.builder()
+                .username("bertil")
+                .password(encoder.encode("password"))
+                .roles("USER")
+                .build();
+
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(encoder.encode("password"))
                 .roles("USER", "ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(ingrid, bertil, admin);
     }
 
 

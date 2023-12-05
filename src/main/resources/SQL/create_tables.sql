@@ -11,7 +11,7 @@ CREATE TABLE category (
 
 CREATE TABLE location (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
     user_id VARCHAR(255),
     is_private BOOLEAN NOT NULL,
     coordinate GEOMETRY NOT NULL SRID 4326,

@@ -1,12 +1,9 @@
-package com.example.springboot;
+package com.example.springboot.exception;
 
-import com.example.springboot.exception.DuplicateEntryException;
-import com.example.springboot.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
