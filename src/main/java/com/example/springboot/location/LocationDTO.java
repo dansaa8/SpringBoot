@@ -15,4 +15,15 @@ public record LocationDTO(
         @JsonSerialize(using = Point2DSerializer.class) Point<G2D> coordinate,
         CategoryDTO category
 ) {
+    public LocationDTO(Location location) {
+        this(
+                location.getId(),
+                location.getName(),
+                location.getIsPrivate(),
+                location.getDescription(),
+                location.getUserId(),
+                location.getCoordinate(),
+                new CategoryDTO(location.getCategory())
+        );
+    }
 }

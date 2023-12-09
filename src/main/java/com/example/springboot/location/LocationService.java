@@ -25,39 +25,37 @@ import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 public class LocationService {
 
     private final LocationRepository repository;
-    private final LocationDTOMapper locationDTOMapper;
     private final CategoryRepository categoryRepository;
 
-    public LocationService(LocationRepository repository, LocationDTOMapper locationDTOMapper, CategoryRepository categoryRepository) {
+    public LocationService(LocationRepository repository, CategoryRepository categoryRepository) {
         this.repository = repository;
-        this.locationDTOMapper = locationDTOMapper;
         this.categoryRepository = categoryRepository;
     }
 
     public List<LocationDTO> getAllPublic() {
-        return repository.findByIsPrivateFalse().stream().map(locationDTOMapper).toList();
+        return repository.findByIsPrivateFalse().stream().map(LocationDTO::new).toList();
     }
 
     public List<LocationDTO> getPublicByCategory(String name) {
-        return repository.findAllByIsPrivateFalseAndCategory_Name(name).stream().map(locationDTOMapper).toList();
+        return repository.findAllByIsPrivateFalseAndCategory_Name(name).stream().map(LocationDTO::new).toList();
     }
 
     public List<LocationDTO> getPublicInRadius(double lat, double lon, double distance) {
         Point<G2D> coordinate = DSL.point(WGS84, g(lon, lat));
-        return repository.filterOnDistance(coordinate, distance).stream().map(locationDTOMapper).toList();
+        return repository.filterOnDistance(coordinate, distance).stream().map(LocationDTO::new).toList();
     }
 
     public LocationDTO getOnePublic(int id) {
         Location location = repository.findByIsPrivateFalseAndId(id)
                 .orElseThrow(() -> new NotFoundException("Location with id '" + id + "' not found"));
-        return locationDTOMapper.apply(location);
+        return new LocationDTO(location);
     }
 
     public List<LocationDTO> getUserLocations(String userId) throws AccessDeniedException {
         Authentication user = getAuthenticatedUserOrThrow();
 
         if(Objects.equals(user.getName(), userId)) {
-            return repository.findMyLocations(userId).stream().map(locationDTOMapper).toList();
+            return repository.findMyLocations(userId).stream().map(LocationDTO::new).toList();
         }
         throw new AccessDeniedException("Access denied");
     }

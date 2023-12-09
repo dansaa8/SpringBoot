@@ -5,4 +5,11 @@ public record CategoryDTO(
         String symbol,
         String description
 ) {
+    public CategoryDTO(Category category) {
+        this(
+                category.getName(),
+                category.getSymbol(),
+                category.getDescription()
+        );
+    }
 }
