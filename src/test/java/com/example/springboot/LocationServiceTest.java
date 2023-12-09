@@ -4,6 +4,7 @@ import com.example.springboot.category.Category;
 import com.example.springboot.location.Location;
 import com.example.springboot.location.LocationRepository;
 import com.example.springboot.location.LocationService;
+import com.example.springboot.location.LocationView;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.example.springboot.LocationFactory.createLocationView;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
@@ -31,39 +31,61 @@ public class LocationServiceTest {
 
     @Test
     void locationService() {
-        Category category = new Category();
-        category.setId(2);
-        category.setName("Theme park");
-        category.setDescription("Carousels to ride");
-        category.setSymbol("Locomotive");
 
-        Location location1 = new Location();
-        location1.setId(1);
-        location1.setName("Liseberg");
-        location1.setUserId("bertil");
-        location1.setCategory(category);
-        location1.setDescription("Göteborg");
-        location1.setCoordinate(new Point<G2D>(new G2D(11.0, 11.0), WGS84));
-        location1.setIsPrivate(false);
+        LocationView locationView1 = new LocationView() {
+            @Override
+            public Integer getId() {
+                return null;
+            }
 
-        Location location2 = new Location();
-        location2.setId(2);
-        location2.setName("Gröna Lund");
-        location2.setUserId("ingrid");
-        location2.setCategory(category);
-        location2.setDescription("Stockholm");
-        location2.setCoordinate(new Point<G2D>(new G2D(22.0, 22.0), WGS84));
-        location1.setIsPrivate(false);
+            @Override
+            public String getName() {
+                return null;
+            }
 
-        var locView1 = createLocationView(location1);
-        var locView2 = createLocationView(location2);
+            @Override
+            public Boolean getIsPrivate() {
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+
+            @Override
+            public String getUserId() {
+                return null;
+            }
+
+            @Override
+            public Point<G2D> getCoordinate() {
+                return null;
+            }
+
+            @Override
+            public CategoryView getCategory() {
+                return null;
+            }
+        }
 
         Mockito.when(locationRepository.findByIsPrivateFalse()).thenReturn(
-                List.of(locView1, locView2));
+                List.of(locationView1, locationView2));
 
             var locations = service.getAllPublic();
-            assertThat(locations).contains(locView1, locView2);
+            assertThat(locations).contains(locationView1, locationView2);
     }
 
+    public static Location createMockLocation1(Category category) {
+        Location location = new Location();
+        location.setId(1);
+        location.setName("Liseberg");
+        location.setUserId("bertil");
+        location.setCategory(category);
+        location.setDescription("Göteborg");
+        location.setCoordinate(new Point<G2D>(new G2D(11.0, 11.0), WGS84));
+        location.setIsPrivate(false);
+        return location;
+    }
 
 }

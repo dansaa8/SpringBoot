@@ -26,20 +26,20 @@ public class LocationController {
     }
 
     @GetMapping("/locations")
-    public List<LocationView> getAllPublicLocations() { return service.getAllPublic();}
+    public List<LocationDTO> getAllPublicLocations() { return service.getAllPublic();}
 
     @GetMapping("/locations/{id}")
-    public LocationView getOnePublicLocation(@PathVariable @LocationIdMustExist int id) {
+    public LocationDTO getOnePublicLocation(@PathVariable @LocationIdMustExist int id) {
         return service.getOnePublic(id);
     }
 
     @GetMapping(path = "/locations", params = "categoryName")
-    public List<LocationView> getPublicLocationsByCategory(@RequestParam String categoryName) {
+    public List<LocationDTO> getPublicLocationsByCategory(@RequestParam String categoryName) {
         return service.getPublicByCategory(categoryName);
     }
 
     @GetMapping(value = "/locations", params = {"lat", "lon", "distance"})
-    public List<LocationView> getPublicLocationsInRadius(
+    public List<LocationDTO> getPublicLocationsInRadius(
             @RequestParam @Latitude double lat,
             @RequestParam @Longitude double lon,
             @RequestParam @NotNull @Min(0) double distance) {
@@ -47,7 +47,7 @@ public class LocationController {
     }
 
     @GetMapping("/users/{userId}/locations")
-    public List<LocationView> getUserLocations(@PathVariable String userId) throws AccessDeniedException {
+    public List<LocationDTO> getUserLocations(@PathVariable String userId) throws AccessDeniedException {
         return service.getUserLocations(userId);
     }
 

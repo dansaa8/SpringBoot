@@ -1,5 +1,6 @@
 package com.example.springboot.location;
 
+import com.example.springboot.category.CategoryDTO;
 import com.example.springboot.category.CategoryRepository;
 import com.example.springboot.exception.NotFoundException;
 import com.example.springboot.location.request.LocationRequestBody;
@@ -16,6 +17,7 @@ import java.util.Objects;
 
 import static com.example.springboot.location.LocationUtils.getAuthenticatedUserOrThrow;
 import static com.example.springboot.location.LocationUtils.setLocationEntityProperties;
+import static java.util.stream.Collectors.toList;
 import static org.geolatte.geom.builder.DSL.g;
 import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
@@ -23,37 +25,39 @@ import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 public class LocationService {
 
     private final LocationRepository repository;
+    private final LocationDTOMapper locationDTOMapper;
     private final CategoryRepository categoryRepository;
 
-    public LocationService(LocationRepository repository, CategoryRepository categoryRepository) {
+    public LocationService(LocationRepository repository, LocationDTOMapper locationDTOMapper, CategoryRepository categoryRepository) {
         this.repository = repository;
+        this.locationDTOMapper = locationDTOMapper;
         this.categoryRepository = categoryRepository;
     }
 
-    public List<LocationView> getAllPublic() {
-        return repository.findByIsPrivateFalse();
+    public List<LocationDTO> getAllPublic() {
+        return repository.findByIsPrivateFalse().stream().map(locationDTOMapper).toList();
     }
 
-
-    public List<LocationView> getPublicByCategory(String name) {
-        return repository.findAllByIsPrivateFalseAndCategory_Name(name);
+    public List<LocationDTO> getPublicByCategory(String name) {
+        return repository.findAllByIsPrivateFalseAndCategory_Name(name).stream().map(locationDTOMapper).toList();
     }
 
-    public List<LocationView> getPublicInRadius(double lat, double lon, double distance) {
+    public List<LocationDTO> getPublicInRadius(double lat, double lon, double distance) {
         Point<G2D> coordinate = DSL.point(WGS84, g(lon, lat));
-        return repository.filterOnDistance(coordinate, distance);
+        return repository.filterOnDistance(coordinate, distance).stream().map(locationDTOMapper).toList();
     }
 
-    public LocationView getOnePublic(int id){
-        return repository.findByIsPrivateFalseAndAndId(id).orElseThrow(() ->
-                new NotFoundException("Location with id '" + id + "' not found"));
+    public LocationDTO getOnePublic(int id) {
+        Location location = repository.findByIsPrivateFalseAndId(id)
+                .orElseThrow(() -> new NotFoundException("Location with id '" + id + "' not found"));
+        return locationDTOMapper.apply(location);
     }
 
-    public List<LocationView> getUserLocations(String userId) throws AccessDeniedException {
+    public List<LocationDTO> getUserLocations(String userId) throws AccessDeniedException {
         Authentication user = getAuthenticatedUserOrThrow();
 
         if(Objects.equals(user.getName(), userId)) {
-            return repository.findMyLocations(userId);
+            return repository.findMyLocations(userId).stream().map(locationDTOMapper).toList();
         }
         throw new AccessDeniedException("Access denied");
     }

@@ -13,13 +13,13 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends ListCrudRepository<Location, Integer> {
 
-    List<LocationView> findByIsPrivateFalse();
-    Optional<LocationView> findByIsPrivateFalseAndAndId(@Param("id") int id);
-    List<LocationView> findAllByIsPrivateFalseAndCategory_Name(@Param("name")String name);
+    List<Location> findByIsPrivateFalse();
+    Optional<Location> findByIsPrivateFalseAndId(@Param("id") int id);
+    List<Location> findAllByIsPrivateFalseAndCategory_Name(@Param("name")String name);
 
 
     @Query("SELECT l FROM Location l WHERE l.userId = :id")
-    List<LocationView> findMyLocations(@Param("id") String id);
+    List<Location> findMyLocations(@Param("id") String id);
 
     @Query("SELECT l FROM Location l WHERE l.userId = :userId AND l.id = :id")
     Optional<Location> findLocationByUserIdAndId(@Param("userId") String userId, @Param("id") int id);
@@ -27,7 +27,7 @@ public interface LocationRepository extends ListCrudRepository<Location, Integer
     @Query("SELECT l FROM Location l " +
             "WHERE FUNCTION('ST_Distance_Sphere', l.coordinate, :coordinate) < :distance " +
             "AND l.isPrivate = false")
-    List<LocationView> filterOnDistance(Point<G2D> coordinate, double distance);
+    List<Location> filterOnDistance(Point<G2D> coordinate, double distance);
 }
 
 
