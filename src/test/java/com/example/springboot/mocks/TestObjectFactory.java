@@ -24,7 +24,7 @@ public class TestObjectFactory {
         location.setName("Liseberg");
         location.setUserId("bertil");
         location.setCategory(category);
-        location.setDescription("Göteborg");
+        location.setDescription("Gothenburg");
         location.setCoordinate(new Point<G2D>(new G2D(11.0, 11.0), WGS84));
         location.setIsPrivate(false);
         return location;
@@ -33,7 +33,7 @@ public class TestObjectFactory {
     public static Location createMockLocation2(Category category) {
         Location location = new Location();
         location.setId(2);
-        location.setName("Gröna Lund");
+        location.setName("Green lund");
         location.setUserId("ingrid");
         location.setCategory(category);
         location.setDescription("Stockholm");

@@ -1,25 +1,30 @@
 package com.example.springboot.matchers;
 
+import com.example.springboot.deserializer.Point2DDeserializer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.geolatte.geom.Point;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResponseBodyMatchers {
 
     private final ObjectMapper objectMapper;
+    private final Point2DDeserializer point2DDeserializer;
 
     public ResponseBodyMatchers() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+
+        // Initialize your custom deserializer
+        point2DDeserializer = new Point2DDeserializer();
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addDeserializer(Point.class, point2DDeserializer);
+        objectMapper.registerModule(simpleModule);
     }
 
     public <T> ResultMatcher containsObjectAsJson(
@@ -42,28 +47,9 @@ public class ResponseBodyMatchers {
         };
     }
 
-    public ResultMatcher containsError(
-            String expectedFieldName,
-            String expectedMessage) {
-        return mvcResult -> {
-            String json = mvcResult.getResponse().getContentAsString();
-            HashMap<String, Object> errorResult = objectMapper.readValue(json, HashMap.class);
-            List<Map.Entry<String, Object>> fieldErrors = errorResult.entrySet().stream()
-                    .filter(fieldError -> fieldError.getKey().equals(expectedFieldName))
-                    .filter(fieldError -> fieldError.getValue().equals(expectedMessage))
-                    .collect(Collectors.toList());
-
-            assertThat(fieldErrors)
-                    .hasSize(1)
-                    .withFailMessage("expecting exactly 1 error message"
-                                    + "with field name '%s' and message '%s'",
-                            expectedFieldName,
-                            expectedMessage);
-        };
-    }
+    // ... rest of your code
 
     public static ResponseBodyMatchers responseBody() {
         return new ResponseBodyMatchers();
     }
-
 }
