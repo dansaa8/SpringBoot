@@ -1,6 +1,3 @@
-USE geo_POI;
-
--- Lägg till kategorier
 INSERT INTO category (id, name, symbol, description)
 VALUES (1, 'GroceryStore', 'Boutique', 'En plats att köpa livsmedel');
 
@@ -13,8 +10,6 @@ VALUES(3, 'BadPlats', 'Wave', 'En plats att svalka sig');
 INSERT INTO category(id, name, symbol, description)
 VALUES(4, 'DjurPark', 'Lion', 'En plats att åskåda exotiska djur');
 
-
--- Lägg till platser
 INSERT INTO location(id, name, user_id, is_private, coordinate, description, fk_category)
 VALUES (
            1,

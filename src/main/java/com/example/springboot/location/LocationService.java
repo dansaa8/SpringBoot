@@ -8,8 +8,10 @@ import jakarta.transaction.Transactional;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 import org.geolatte.geom.builder.DSL;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -24,12 +26,15 @@ import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 @Service
 public class LocationService {
 
+    RestClient client;
+
     private final LocationRepository repository;
     private final CategoryRepository categoryRepository;
 
-    public LocationService(LocationRepository repository, CategoryRepository categoryRepository) {
+    public LocationService(LocationRepository repository, CategoryRepository categoryRepository, RestClient client) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
+        this.client = client;
     }
 
     public List<LocationDTO> getAllPublic() {
@@ -46,6 +51,8 @@ public class LocationService {
     }
 
     public LocationDTO getOnePublic(int id) {
+        var result = client.get().uri("/api/locations").retrieve().body(new ParameterizedTypeReference<List<Location>>() {
+        });
         Location location = repository.findByIsPrivateFalseAndId(id)
                 .orElseThrow(() -> new NotFoundException("Location with id '" + id + "' not found"));
         return new LocationDTO(location);

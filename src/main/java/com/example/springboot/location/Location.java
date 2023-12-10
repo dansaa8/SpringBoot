@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "location", schema = "geo_POI")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
