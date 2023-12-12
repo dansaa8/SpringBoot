@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Innehåller @RestBody som genererar JSON-data
+@RestController
 @RequestMapping("api/categories")
 @Validated
 public class CategoryController {

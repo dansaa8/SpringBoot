@@ -49,12 +49,10 @@ public class GeocodingApiConnector {
             JsonNode jsonNode = objectMapper.readTree(jsonString);
             JsonNode addressNode = jsonNode.get("address");
 
-            // Convert addressNode to a Map<String, Object>
             Map<String, Object> addressMap = objectMapper.convertValue(addressNode, Map.class);
 
             return addressMap;
         } catch (Exception e) {
-            // Handle the exception appropriately
             logger.error("Error processing JSON", e);
             return new HashMap<>();
         }
@@ -62,7 +60,6 @@ public class GeocodingApiConnector {
 
     @Recover
     public Map<String, Object> recoverMethod(RestClientException e) {
-        // Provide a default map or handle the recovery logic
         return new HashMap<>();
     }
 }

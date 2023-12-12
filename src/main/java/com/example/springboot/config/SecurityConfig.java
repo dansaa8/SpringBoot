@@ -51,7 +51,6 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/users/**").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/api/geo").permitAll()
                         .anyRequest().denyAll())
                 .build();
     }
@@ -83,9 +82,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Mest vanliga encodern. Testa hur lång tid.
-        // Snabb server så bör man höja talet för att förhindra brute-force-försök.
-        // Finns nyare version. Argon2, kräver mer manuell config.
         return new BCryptPasswordEncoder();
     }
 
@@ -93,12 +89,4 @@ public class SecurityConfig {
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
-
-//    class MyUserDetails implements UserDetailsService {
-//
-//        @Override
-//        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//            return null;
-//        }
-//    }
 }

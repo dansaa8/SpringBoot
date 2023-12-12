@@ -16,7 +16,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id; // Kan skicka in null med objektversion = skapa ny rad o autogenerera ID
+    private Integer id;
 
     @Size(max = 255)
     @Column(name = "name", nullable = false)
@@ -30,6 +30,6 @@ public class Category {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "category") // refererar till fältnamnet i Location entiteten; inte kolumnnamn i DB
+    @OneToMany(mappedBy = "category")
     private List<Location> locations = new ArrayList<>();
 }
