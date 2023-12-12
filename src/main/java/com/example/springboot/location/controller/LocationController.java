@@ -24,7 +24,7 @@ import java.util.List;
 public class LocationController {
 
     private final LocationQueryService queryService;
-    private final LocationUpdateService updateService;
+    private final LocationUpdateService updateService;  
 
     public LocationController(LocationQueryService qService, LocationUpdateService uService) {
         this.queryService = qService;
