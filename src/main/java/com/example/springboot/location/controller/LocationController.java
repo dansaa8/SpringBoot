@@ -31,11 +31,6 @@ public class LocationController {
         this.updateService = uService;
     }
 
-//    @GetMapping("/geo")
-//        String lookup(@RequestParam float lat, @RequestParam float lon) {
-//            return queryService.reverseGeoCode(lat, lon);
-//        }
-
     @GetMapping("/locations")
     public List<LocationDTO> getAllPublicLocations() { return queryService.getAllPublic();}
 

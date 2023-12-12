@@ -47,9 +47,9 @@ public class SpringMockMvcTest {
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
-    void shouldReturnLocationView() throws Exception {
+    void shouldReturnLocationDTOWithAddress() throws Exception {
         Category category = createMockCategory();
-        LocationDTO expected = new LocationDTO(createMockLocation1(category));
+        var expected = new LocationDTOWithAddress(createMockLocation1(category), null);
 
         when(repository.existsById(1)).thenReturn(true);
 
@@ -59,7 +59,7 @@ public class SpringMockMvcTest {
         mockMvc.perform(get("/api/locations/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(responseBody().containsObjectAsJson(expected, LocationDTO.class));
+                .andExpect(responseBody().containsObjectAsJson(expected, LocationDTOWithAddress.class));
     }
 
     @Test
