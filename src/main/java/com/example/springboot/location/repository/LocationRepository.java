@@ -1,5 +1,6 @@
-package com.example.springboot.location;
+package com.example.springboot.location.repository;
 
+import com.example.springboot.location.entity.Location;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 import org.springframework.data.jpa.repository.Query;

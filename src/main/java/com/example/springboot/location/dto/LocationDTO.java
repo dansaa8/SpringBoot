@@ -1,6 +1,7 @@
-package com.example.springboot.location;
+package com.example.springboot.location.dto;
 
 import com.example.springboot.category.CategoryDTO;
+import com.example.springboot.location.entity.Location;
 import com.example.springboot.serializer.Point2DSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.geolatte.geom.G2D;

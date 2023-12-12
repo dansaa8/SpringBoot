@@ -1,4 +1,4 @@
-package com.example.springboot.location.request;
+package com.example.springboot.location.requestbody;
 
 import com.example.springboot.constraint.coordinate.Latitude;
 import com.example.springboot.constraint.coordinate.Longitude;

@@ -1,9 +1,13 @@
-package com.example.springboot.location;
+package com.example.springboot.location.controller;
 
 import com.example.springboot.constraint.coordinate.Latitude;
 import com.example.springboot.constraint.coordinate.Longitude;
 import com.example.springboot.constraint.location.LocationIdMustExist;
-import com.example.springboot.location.request.LocationRequestBody;
+import com.example.springboot.location.dto.LocationDTO;
+import com.example.springboot.location.dto.LocationDTOWithAddress;
+import com.example.springboot.location.requestbody.LocationRequestBody;
+import com.example.springboot.location.service.LocationQueryService;
+import com.example.springboot.location.service.LocationUpdateService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -19,23 +23,30 @@ import java.util.List;
 @Validated
 public class LocationController {
 
-    private final LocationService service;
+    private final LocationQueryService queryService;
+    private final LocationUpdateService updateService;
 
-    public LocationController(LocationService service) {
-        this.service = service;
+    public LocationController(LocationQueryService qService, LocationUpdateService uService) {
+        this.queryService = qService;
+        this.updateService = uService;
     }
 
+//    @GetMapping("/geo")
+//        String lookup(@RequestParam float lat, @RequestParam float lon) {
+//            return queryService.reverseGeoCode(lat, lon);
+//        }
+
     @GetMapping("/locations")
-    public List<LocationDTO> getAllPublicLocations() { return service.getAllPublic();}
+    public List<LocationDTO> getAllPublicLocations() { return queryService.getAllPublic();}
 
     @GetMapping("/locations/{id}")
-    public LocationDTO getOnePublicLocation(@PathVariable @LocationIdMustExist int id) {
-        return service.getOnePublic(id);
+    public LocationDTOWithAddress getOnePublicLocation(@PathVariable @LocationIdMustExist int id) {
+        return queryService.getOnePublic(id);
     }
 
     @GetMapping(path = "/locations", params = "categoryName")
     public List<LocationDTO> getPublicLocationsByCategory(@RequestParam String categoryName) {
-        return service.getPublicByCategory(categoryName);
+        return queryService.getPublicByCategory(categoryName);
     }
 
     @GetMapping(value = "/locations", params = {"lat", "lon", "distance"})
@@ -43,17 +54,17 @@ public class LocationController {
             @RequestParam @Latitude double lat,
             @RequestParam @Longitude double lon,
             @RequestParam @NotNull @Min(0) double distance) {
-        return service.getPublicInRadius(lat, lon, distance);
+        return queryService.getPublicInRadius(lat, lon, distance);
     }
 
     @GetMapping("/users/{userId}/locations")
     public List<LocationDTO> getUserLocations(@PathVariable String userId) throws AccessDeniedException {
-        return service.getUserLocations(userId);
+        return queryService.getUserLocations(userId);
     }
 
     @PostMapping("/locations")
     public ResponseEntity<String> addLocation(@RequestBody @Valid LocationRequestBody requestBody) throws AccessDeniedException {
-        service.add(requestBody);
+        updateService.add(requestBody);
         return ResponseEntity.ok("Location successfully added");
     }
 
@@ -61,11 +72,11 @@ public class LocationController {
     public void updateLocation(
             @PathVariable @Valid @LocationIdMustExist int id,
             @RequestBody @Valid LocationRequestBody requestBody) throws AccessDeniedException {
-        service.update(id, requestBody);
+        updateService.update(id, requestBody);
     }
 
     @DeleteMapping("/locations/{id}")
     public void deleteLocation(@PathVariable @Valid @LocationIdMustExist int id) throws AccessDeniedException {
-        service.delete(id);
+        updateService.delete(id);
     }
 }

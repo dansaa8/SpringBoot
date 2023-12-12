@@ -50,6 +50,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/locations/*").authenticated()
 
                         .requestMatchers(HttpMethod.GET, "/api/users/**").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "/api/geo").permitAll()
                         .anyRequest().denyAll())
                 .build();
     }

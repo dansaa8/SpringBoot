@@ -1,7 +1,7 @@
 package com.example.springboot.constraint.location;
 
 import com.example.springboot.exception.NotFoundException;
-import com.example.springboot.location.LocationRepository;
+import com.example.springboot.location.repository.LocationRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;

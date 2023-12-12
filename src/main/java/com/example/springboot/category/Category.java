@@ -1,6 +1,6 @@
 package com.example.springboot.category;
 
-import com.example.springboot.location.Location;
+import com.example.springboot.location.entity.Location;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

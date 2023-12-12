@@ -1,4 +1,4 @@
-package com.example.springboot.location;
+package com.example.springboot.location.entity;
 
 import com.example.springboot.category.Category;
 import jakarta.persistence.*;

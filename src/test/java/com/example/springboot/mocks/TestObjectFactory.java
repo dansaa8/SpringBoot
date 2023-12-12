@@ -1,7 +1,7 @@
 package com.example.springboot.mocks;
 
 import com.example.springboot.category.Category;
-import com.example.springboot.location.Location;
+import com.example.springboot.location.entity.Location;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Point;
 
